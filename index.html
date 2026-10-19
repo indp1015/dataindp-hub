@@ -4,35 +4,65 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data in DP - US Real Estate Data Hub</title>
-  <!-- AdSense -->
+  <meta name="description" content="Explore comprehensive U.S. real estate data. Access housing market scores, mortgage calculators, and county-level property tax rates.">
+  
+  <!-- AdSense 소유권 확인용 스크립트 -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2850461542641038" crossorigin="anonymous"></script>
+  
   <style>
-    body { font-family: sans-serif; text-align: center; padding: 50px; background: #f4f4f9; color: #333; }
-    h1 { color: #1a3d5c; }
-    .links { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
-    .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 250px; text-decoration: none; color: #1a3d5c; transition: transform 0.2s; }
-    .card:hover { transform: translateY(-5px); }
-    .card h3 { margin-top: 0; }
-    .card p { color: #666; font-size: 14px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; color: #333; line-height: 1.6; }
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    header { text-align: center; margin-bottom: 40px; }
+    h1 { color: #1a3d5c; margin-bottom: 10px; }
+    .subtitle { font-size: 1.1em; color: #666; }
+    .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 50px; }
+    .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 250px; text-decoration: none; color: #333; transition: transform 0.2s, box-shadow 0.2s; border-top: 4px solid #1a3d5c; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+    .card h3 { margin-top: 0; color: #1a3d5c; }
+    .card p { font-size: 0.9em; color: #666; margin-bottom: 0; }
+    .content-section { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+    .content-section h2 { color: #1a3d5c; margin-top: 0; }
+    footer { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 0.9em; color: #888; }
+    footer a { color: #1a3d5c; text-decoration: none; margin: 0 10px; }
   </style>
 </head>
 <body>
-  <h1>Welcome to Data in DP</h1>
-  <p>Your central hub for comprehensive U.S. real estate and housing data.</p>
-  
-  <div class="links">
-    <a href="https://housing.dataindp.com" class="card">
-      <h3>🏘️ Housing</h3>
-      <p>Market scores, trends, and county-level housing data.</p>
-    </a>
-    <a href="https://mortgage.dataindp.com" class="card">
-      <h3>💰 Mortgage</h3>
-      <p>Calculators, amortization schedules, and loan limits.</p>
-    </a>
-    <a href="https://propertytax.dataindp.com" class="card">
-      <h3>🧾 Property Tax</h3>
-      <p>Effective tax rates and county tax details.</p>
-    </a>
+  <div class="container">
+    <header>
+      <h1>Welcome to Data in DP</h1>
+      <p class="subtitle">Your central hub for comprehensive U.S. real estate and housing data.</p>
+    </header>
+    
+    <div class="links">
+      <a href="https://housing.dataindp.com" class="card">
+        <h3>🏘️ Housing Data</h3>
+        <p>Explore market scores, price trends, and county-level housing statistics across the United States.</p>
+      </a>
+      <a href="https://mortgage.dataindp.com" class="card">
+        <h3>💰 Mortgage Tools</h3>
+        <p>Calculate monthly payments, view amortization schedules, and check FHA/VA loan limits.</p>
+      </a>
+      <a href="https://propertytax.dataindp.com" class="card">
+        <h3>🧾 Property Tax</h3>
+        <p>Find effective property tax rates and detailed tax information for every U.S. county.</p>
+      </a>
+    </div>
+
+    <div class="content-section">
+      <h2>About Data in DP</h2>
+      <p>Navigating the U.S. real estate market can be complex. Data in DP provides three specialized tools to help homeowners, buyers, and investors make informed decisions.</p>
+      <p>Our <strong>Housing</strong> platform analyzes market momentum and stability. Our <strong>Mortgage</strong> tools help you understand exactly what you can afford. Finally, our <strong>Property Tax</strong> database ensures there are no hidden surprises in your annual tax bill.</p>
+      <p>All data is sourced from reliable public datasets, including the U.S. Census Bureau, FHFA, and FRED.</p>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 Data in DP. All rights reserved.</p>
+      <p>
+        <a href="/privacy.html">Privacy Policy</a> | 
+        <a href="/terms.html">Terms of Service</a> | 
+        <a href="/contact.html">Contact Us</a>
+      </p>
+    </footer>
   </div>
 </body>
 </html>
