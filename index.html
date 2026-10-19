@@ -3,56 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data in DP - US Real Estate Data Hub</title>
-  <meta name="description" content="Explore comprehensive U.S. real estate data. Access housing market scores, mortgage calculators, and county-level property tax rates.">
+  <title>Data in DP - US Real Estate Data Hub & Market Insights</title>
+  <meta name="description" content="Explore comprehensive U.S. real estate data. Access housing market scores, mortgage calculators, county-level property tax rates, and the latest market insights.">
   
   <!-- AdSense 소유권 확인용 스크립트 -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2850461542641038" crossorigin="anonymous"></script>
   
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; color: #333; line-height: 1.6; }
-    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-    header { text-align: center; margin-bottom: 40px; }
-    h1 { color: #1a3d5c; margin-bottom: 10px; }
-    .subtitle { font-size: 1.1em; color: #666; }
-    .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 50px; }
-    .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 250px; text-decoration: none; color: #333; transition: transform 0.2s, box-shadow 0.2s; border-top: 4px solid #1a3d5c; }
-    .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-    .card h3 { margin-top: 0; color: #1a3d5c; }
-    .card p { font-size: 0.9em; color: #666; margin-bottom: 0; }
-    .content-section { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
-    .content-section h2 { color: #1a3d5c; margin-top: 0; }
-    footer { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 0.9em; color: #888; }
-    footer a { color: #1a3d5c; text-decoration: none; margin: 0 10px; }
+    :root { --primary: #1a3d5c; --bg: #f8f9fa; --text: #333; --card-bg: #ffffff; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+    
+    /* Header */
+    header { text-align: center; margin-bottom: 50px; }
+    h1 { color: var(--primary); margin-bottom: 10px; font-size: 2.5em; }
+    .subtitle { font-size: 1.2em; color: #666; max-width: 700px; margin: 0 auto; }
+    
+    /* Tool Cards */
+    .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 50px; }
+    .card { background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-decoration: none; color: var(--text); transition: transform 0.2s, box-shadow 0.2s; border-top: 5px solid var(--primary); display: flex; flex-direction: column; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    .card h3 { margin-top: 0; color: var(--primary); font-size: 1.4em; }
+    .card p { font-size: 0.95em; color: #555; flex-grow: 1; }
+    .card .btn { display: inline-block; margin-top: 15px; color: var(--primary); font-weight: bold; text-decoration: underline; }
+    
+    /* Content Sections */
+    .content-section { background: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+    .content-section h2 { color: var(--primary); margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+    .content-section h3 { color: var(--primary); margin-top: 25px; }
+    .content-section p { margin-bottom: 15px; font-size: 1.05em; line-height: 1.8; }
+    
+    /* Footer */
+    footer { text-align: center; margin-top: 60px; padding: 30px 20px; border-top: 1px solid #ddd; font-size: 0.9em; color: #888; }
+    footer a { color: var(--primary); text-decoration: none; margin: 0 10px; font-weight: bold; }
+    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>Welcome to Data in DP</h1>
-      <p class="subtitle">Your central hub for comprehensive U.S. real estate and housing data.</p>
+      <p class="subtitle">Your comprehensive hub for U.S. real estate data, mortgage tools, and property tax insights. We turn complex public datasets into actionable information.</p>
     </header>
     
+    <!-- 3개 사이트 링크 카드 -->
     <div class="links">
       <a href="https://housing.dataindp.com" class="card">
         <h3>🏘️ Housing Data</h3>
-        <p>Explore market scores, price trends, and county-level housing statistics across the United States.</p>
+        <p>Explore market scores, price trends, and county-level housing statistics across the United States. Discover which markets are booming and which offer the best value.</p>
+        <span class="btn">Explore Housing Data →</span>
       </a>
       <a href="https://mortgage.dataindp.com" class="card">
         <h3>💰 Mortgage Tools</h3>
-        <p>Calculate monthly payments, view amortization schedules, and check FHA/VA loan limits.</p>
+        <p>Calculate monthly payments, view detailed amortization schedules, and check FHA/VA loan limits. Plan your financing with our free, accurate calculators.</p>
+        <span class="btn">Use Mortgage Tools →</span>
       </a>
       <a href="https://propertytax.dataindp.com" class="card">
         <h3>🧾 Property Tax</h3>
-        <p>Find effective property tax rates and detailed tax information for every U.S. county.</p>
+        <p>Find effective property tax rates and detailed tax information for every U.S. county. Understand the true, long-term cost of your next home.</p>
+        <span class="btn">Check Property Taxes →</span>
       </a>
     </div>
 
+    <!-- 애드센스 승인을 위한 핵심 콘텐츠 영역 (시장 동향) -->
     <div class="content-section">
-      <h2>About Data in DP</h2>
-      <p>Navigating the U.S. real estate market can be complex. Data in DP provides three specialized tools to help homeowners, buyers, and investors make informed decisions.</p>
-      <p>Our <strong>Housing</strong> platform analyzes market momentum and stability. Our <strong>Mortgage</strong> tools help you understand exactly what you can afford. Finally, our <strong>Property Tax</strong> database ensures there are no hidden surprises in your annual tax bill.</p>
-      <p>All data is sourced from reliable public datasets, including the U.S. Census Bureau, FHFA, and FRED.</p>
+      <h2>Current U.S. Real Estate Market Insights</h2>
+      <p>Navigating the U.S. real estate market requires understanding the delicate balance between home prices, mortgage rates, and local tax burdens. In today's dynamic environment, buyers and investors must look beyond the listing price to grasp the full financial picture.</p>
+      
+      <h3>1. The Impact of Mortgage Rates on Affordability</h3>
+      <p>Over the past few years, the 30-year fixed mortgage rate has experienced significant volatility, heavily influencing buyer purchasing power. When rates rise, even a 1% increase can add hundreds of dollars to a monthly payment. Our <strong>Mortgage Tools</strong> section is designed to help you navigate this. By utilizing our amortization schedules and FHA/VA loan limit calculators, prospective buyers can accurately model their monthly obligations. Understanding loan limits—especially the differences between conforming loans and FHA loans—is crucial for securing favorable terms in competitive markets.</p>
+      
+      <h3>2. Housing Market Momentum and Stability</h3>
+      <p>The housing market is not a monolith; it is a collection of thousands of local micro-economies. Our <strong>Housing Data</strong> platform analyzes county-level data to determine Market Phases—ranging from "Boom" to "Recovering." We track metrics such as home value appreciation, owner-occupancy rates, and the price-to-rent ratio. For first-time homebuyers, identifying counties with stable pricing and high rental yields can uncover hidden opportunities that national headlines often miss.</p>
+
+      <h3>3. The Hidden Cost: Property Taxes</h3>
+      <p>A common oversight for homebuyers is underestimating property taxes. Effective property tax rates can vary drastically from one state to another, and even from county to county within the same state. In some regions, high property taxes can significantly erode the return on investment for rental properties. Our <strong>Property Tax</strong> database provides transparency, offering effective tax rates for over 3,000 counties. This allows users to calculate the true, long-term cost of homeownership before making a commitment.</p>
+    </div>
+
+    <!-- 데이터 출처 및 신뢰도 확보 -->
+    <div class="content-section">
+      <h2>About Data in DP & Our Data Sources</h2>
+      <p>Data in DP was created to democratize access to complex real estate data. We believe that informed decisions are the best decisions, whether you are buying your first home, refinancing a mortgage, or investing in rental properties.</p>
+      <p>To ensure the highest level of accuracy, all the data and analytics provided across our platforms are sourced from reliable public datasets and official government agencies. Our primary sources include:</p>
+      <ul>
+        <li><strong>U.S. Census Bureau (ACS):</strong> For demographic, housing value, and rent statistics.</li>
+        <li><strong>FHFA (Federal Housing Finance Agency):</strong> For housing price index (HPI) data and market trends.</li>
+        <li><strong>FRED (Federal Reserve Economic Data):</strong> For real-time mortgage rate tracking.</li>
+        <li><strong>HUD (Housing and Urban Development):</strong> For official FHA loan limits.</li>
+      </ul>
+      <p>We continuously update our pipelines to ensure that our users are interacting with the most current and reliable data available. Our goal is to provide a seamless, integrated experience where you can move from market analysis to financial calculation in just a few clicks.</p>
     </div>
 
     <footer>
