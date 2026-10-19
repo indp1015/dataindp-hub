@@ -110,13 +110,13 @@
         </div>
         <div class="snapshot-item">
           <span class="snapshot-label">Avg. Effective Property Tax</span>
-          <span class="snapshot-value">1.05%</span> <!-- 정적 데이터 (추후 연동 가능) -->
+          <span class="snapshot-value" id="liveAvgTaxRate">Loading...</span>
         </div>
         <div class="snapshot-item">
-          <span class="snapshot-label">Highest Tax State (NJ)</span>
-          <span class="snapshot-value">2.23%</span> <!-- 정적 데이터 -->
+          <span class="snapshot-label">Highest Tax State</span>
+          <span class="snapshot-value" id="liveHighestTax">Loading...</span>
         </div>
-        <span class="snapshot-source">*Data fetched from FRED & Census via sub-sites.</span>
+        <span class="snapshot-source">*Data fetched live from FRED & Census via sub-sites.</span>
       </div>
 
       <!-- 오른쪽: 간이 모기지 계산기 -->
@@ -156,7 +156,7 @@
       <p>A common oversight for homebuyers is underestimating property taxes. Effective property tax rates can vary drastically from one state to another, and even from county to county within the same state. In some regions, high property taxes can significantly erode the return on investment for rental properties. Our <strong>Property Tax</strong> database provides transparency, offering effective tax rates for over 3,000 counties. This allows users to calculate the true, long-term cost of homeownership before making a commitment.</p>
     </div>
 
-    <!-- 🆕 애드센스 승인을 위한 심층 FAQ 섹션 -->
+    <!-- 애드센스 승인을 위한 심층 FAQ 섹션 -->
     <div class="content-section">
       <h2>Frequently Asked Questions (FAQ)</h2>
       
@@ -205,29 +205,52 @@
     </footer>
   </div>
 
-  <!-- 🆕 실시간 데이터 Fetch 및 계산기 스크립트 -->
+  <!-- 실시간 데이터 Fetch 및 계산기 스크립트 -->
   <script>
-    // 1. 실시간 데이터 가져오기 (Housing 사이트의 FRED 데이터 활용)
+    // 1. 실시간 데이터 가져오기 (Housing & Property Tax 연동)
     async function fetchLiveData() {
-      try {
-        // 실제 배포된 FRED 데이터 JSON 경로 (하우징 사이트의 실제 경로로 수정 필요할 수 있음)
-        const response = await fetch('https://housing.dataindp.com/data/fred_mortgage_rates.json');
-        if (response.ok) {
-          const data = await response.json();
-          const rate = data.series?.MORTGAGE30US?.latest?.value;
-          if (rate) {
-            document.getElementById('liveRate').innerText = rate.toFixed(2) + '%';
-            document.getElementById('interestRate').value = rate.toFixed(2); // 계산기 기본값 자동 업데이트
-          }
-        } else {
-          document.getElementById('liveRate').innerText = '7.40%'; // 실패 시 폴백
+      // Housing 데이터 (금리, 주택가격)
+      const housingPromise = fetch('https://housing.dataindp.com/data/live_stats.json')
+        .then(res => res.ok ? res.json() : null)
+        .catch(() => null);
+
+      // Property Tax 데이터 (평균 세율, 최고 주)
+      const taxPromise = fetch('https://propertytax.dataindp.com/data/tax_stats.json')
+        .then(res => res.ok ? res.json() : null)
+        .catch(() => null);
+
+      // 두 API를 동시에 호출하여 대기 시간 최소화
+      const [housingData, taxData] = await Promise.all([housingPromise, taxPromise]);
+
+      // --- Housing 데이터 렌더링 ---
+      if (housingData && housingData.mortgage_rate) {
+        const rate = parseFloat(housingData.mortgage_rate);
+        document.getElementById('liveRate').innerText = rate.toFixed(2) + '%';
+        document.getElementById('interestRate').value = rate.toFixed(2);
+        
+        if (housingData.median_home_value) {
+          const homeValue = parseInt(housingData.median_home_value);
+          document.getElementById('liveHomeValue').innerText = '$' + homeValue.toLocaleString();
         }
-      } catch (e) {
+      } else {
+        // 폴백 (통신 실패 시)
         document.getElementById('liveRate').innerText = '7.40%';
+        document.getElementById('liveHomeValue').innerText = '$423,100';
       }
 
-      // U.S. Median Home Value (고정값 또는 추후 API 연동)
-      document.getElementById('liveHomeValue').innerText = '$423,100'; 
+      // --- Property Tax 데이터 렌더링 ---
+      if (taxData) {
+        if (taxData.avg_effective_tax_rate) {
+          document.getElementById('liveAvgTaxRate').innerText = taxData.avg_effective_tax_rate.toFixed(2) + '%';
+        }
+        if (taxData.highest_tax_state && taxData.highest_tax_rate) {
+          document.getElementById('liveHighestTax').innerText = `${taxData.highest_tax_state} (${taxData.highest_tax_rate.toFixed(2)}%)`;
+        }
+      } else {
+        // 폴백 (통신 실패 시)
+        document.getElementById('liveAvgTaxRate').innerText = '1.02%';
+        document.getElementById('liveHighestTax').innerText = 'NJ (2.23%)';
+      }
     }
 
     // 2. 모기지 계산기
