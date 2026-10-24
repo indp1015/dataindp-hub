@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Housing Market & Livability Data for 3,100+ U.S. Counties</title>
-  <meta name="description" content="Explore county-level Livability Scores, housing market trends, mortgage calculators, and property tax rates across 3,100+ U.S. counties. Built from U.S. Census, FBI, CDC, and OpenStreetMap data.">
+    <meta name="description" content="Explore county-level Livability Scores, housing trends, mortgage calculators, property tax rates, and insurance risk data across 3,100+ U.S. counties. Built from U.S. Census, FEMA, FBI, CDC, and OpenStreetMap data.">
 
   <!-- Open Graph / Social -->
   <meta property="og:title" content="Housing Market & Livability Data for 3,100+ U.S. Counties">
-  <meta property="og:description" content="County-level livability scores, housing trends, mortgage tools, and property tax data — all in one hub.">
+    <meta property="og:description" content="County-level livability scores, housing trends, mortgage tools, property tax, and climate risk data — all in one hub.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://dataindp.com/">
 
@@ -45,7 +45,8 @@
     .subtitle { font-size: 1.2em; color: #666; max-width: 720px; margin: 0 auto; }
 
     /* Tool Cards */
-    .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 40px; }
+    @media (max-width: 640px) { .links { grid-template-columns: 1fr; } }
     .card { background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-decoration: none; color: var(--text); transition: transform 0.2s, box-shadow 0.2s; border-top: 5px solid var(--primary); display: flex; flex-direction: column; }
     .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
     .card h3 { margin-top: 0; color: var(--primary); font-size: 1.4em; }
@@ -112,7 +113,7 @@
   <div class="container">
     <header>
       <h1>U.S. Housing Market, Livability &amp; Mortgage Data Hub</h1>
-      <p class="subtitle">Explore county-level <strong>Livability Scores</strong>, housing market trends, mortgage calculators, and property tax rates across 3,100+ U.S. counties — all sourced from public data.</p>
+      <p class="subtitle">Explore county-level <strong>Livability Scores</strong>, housing market trends, mortgage calculators, property tax rates, and <strong>climate risk &amp; insurance data</strong> across 3,100+ U.S. counties — all sourced from public data.</p>
     </header>
 
     <!-- 3 Site Cards -->
@@ -131,6 +132,11 @@
         <h3>🧾 Property Tax</h3>
         <p>Find effective property tax rates and detailed tax information for every U.S. county. Understand the true, long-term cost of your next home.</p>
         <span class="btn">Check Property Taxes →</span>
+      </a>
+      <a href="https://insurance.dataindp.com" class="card">
+        <h3>🛡️ Insurance &amp; Climate Risk</h3>
+        <p>Composite insurance risk scores for 3,100+ U.S. counties — combining FEMA climate data, county insurance premiums, and housing affordability. Includes a full PITI calculator and 6 non-standard risk guides (flood, earthquake, wildfire, hurricane, tornado, landslide).</p>
+        <span class="btn">Explore Insurance Risk →</span>
       </a>
     </div>
 
@@ -269,6 +275,11 @@
         <h4>Can I use your calculators for investment properties?</h4>
         <p>Absolutely. While our primary focus is on primary residences, our calculators can be used for investment properties. Note that investment property mortgage rates are typically 0.5% to 1.0% higher than primary residence rates, and property taxes may be reassessed upon purchase depending on state law.</p>
       </div>
+      
+      <div class="faq-item">
+        <h4>Where does the climate and insurance risk data come from?</h4>
+        <p>Our Insurance site combines FEMA's National Risk Index (climate safety, hazard exposure), Census ACS 5-Year Estimates (median home value, population), and county-level insurance premium data derived from the HearthMap dataset (NBER Working Paper 32579, licensed CC BY 4.0). Composite risk scores are percentile rankings across all U.S. counties. We also provide 6 non-standard risk guides covering flood, earthquake, wildfire, hurricane, tornado, and landslide — the risks that standard HO-3 policies don't fully cover.</p>
+      </div>
     </div>
 
     <!-- Data Sources -->
@@ -282,6 +293,7 @@
         <li><strong>FRED (Federal Reserve Economic Data):</strong> Real-time mortgage rate tracking.</li>
         <li><strong>HUD (Housing and Urban Development):</strong> Official FHA loan limits.</li>
         <li><strong>FBI Uniform Crime Reporting:</strong> County-level violent and property crime rates.</li>
+                <li><strong>FEMA National Risk Index:</strong> County-level climate and natural hazard risk scores (public domain).</li>
         <li><strong>CDC PLACES:</strong> County-level health indicators (public domain / ODC-ODbL 1.0; not endorsed by CDC or HHS).</li>
         <li><strong>OpenStreetMap:</strong> Amenity density data (© OpenStreetMap contributors, ODbL 1.0).</li>
       </ul>
