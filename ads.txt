@@ -2,3 +2,4 @@ google.com, pub-2850461542641038, DIRECT, f08c47fec0942fa0
 subdomain=housing.dataindp.com
 subdomain=mortgage.dataindp.com
 subdomain=propertytax.dataindp.com
+subdomain=insurance.dataindp.com/
