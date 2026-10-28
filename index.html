@@ -784,12 +784,16 @@
 
       const monthlyTax = (price * (taxRate / 100)) / 12;
       const monthlyIns = annualIns / 12; 
-      const totalPITI = pi + monthlyTax + monthlyIns; 
+ // 🌟 수정 코드 (각 항목을 먼저 반올림한 후 더함)
+      const roundedPi = Math.round(pi);
+      const roundedTax = Math.round(monthlyTax);
+      const roundedIns = Math.round(monthlyIns);
+      const totalPITI = roundedPi + roundedTax + roundedIns; 
 
-      document.getElementById('dash-pi').textContent = '$' + Math.round(pi).toLocaleString();
-      document.getElementById('dash-monthly-tax').textContent = '$' + Math.round(monthlyTax).toLocaleString();
-      document.getElementById('dash-monthly-ins').textContent = annualIns > 0 ? '$' + Math.round(monthlyIns).toLocaleString() : 'N/A';
-      document.getElementById('dash-piti-total').textContent = '$' + Math.round(totalPITI).toLocaleString();
+      document.getElementById('dash-pi').textContent = '$' + roundedPi.toLocaleString();
+      document.getElementById('dash-monthly-tax').textContent = '$' + roundedTax.toLocaleString();
+      document.getElementById('dash-monthly-ins').textContent = annualIns > 0 ? '$' + roundedIns.toLocaleString() : 'N/A';
+      document.getElementById('dash-piti-total').textContent = '$' + totalPITI.toLocaleString();
 
       // 3. AdSense용 동적 텍스트 생성
       let analysis = `<strong>Analysis for ${data.name}:</strong> `;
