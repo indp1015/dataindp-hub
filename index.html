@@ -636,28 +636,59 @@
         dashboardData = json.counties || {};
         globalMortgageRate = json.metadata.mortgage_rate_30yr || globalMortgageRate;
 
-        const select = document.getElementById('countySelect');
-        select.innerHTML = '<option value="">-- Select a County --</option>';
-
+        const searchInput = document.getElementById('countySearch');
+        const resultsList = document.getElementById('countyResults');
+        
+        // 알파벳 순 정렬
         const sortedSlugs = Object.keys(dashboardData).sort((a, b) => 
           dashboardData[a].name.localeCompare(dashboardData[b].name)
         );
 
-        sortedSlugs.forEach(slug => {
-          const option = document.createElement('option');
-          option.value = slug;
-          option.textContent = dashboardData[slug].name;
-          select.appendChild(option);
-        });
-
-        select.addEventListener('change', (e) => {
-          if (e.target.value) updateDashboard(e.target.value);
-        });
-
+        // 초기 렌더링 (첫 번째 카운티)
         if (sortedSlugs.length > 0) {
-          select.value = sortedSlugs[0];
+          searchInput.value = dashboardData[sortedSlugs[0]].name;
           updateDashboard(sortedSlugs[0]);
         }
+
+        // 검색 필터링 함수
+        function renderOptions(query = '') {
+          const lowerQuery = query.toLowerCase();
+          // 성능을 위해 최대 100개까지만 화면에 렌더링
+          const filtered = sortedSlugs.filter(slug => 
+            dashboardData[slug].name.toLowerCase().includes(lowerQuery)
+          ).slice(0, 100); 
+
+          if (filtered.length === 0) {
+            resultsList.innerHTML = '<li style="color:#999;cursor:default;">No counties found</li>';
+          } else {
+            resultsList.innerHTML = filtered.map(slug => 
+              `<li data-slug="${slug}">${dashboardData[slug].name}</li>`
+            ).join('');
+          }
+          resultsList.style.display = 'block';
+        }
+
+        // 이벤트 리스너 등록
+        searchInput.addEventListener('focus', () => renderOptions(searchInput.value));
+        searchInput.addEventListener('input', (e) => renderOptions(e.target.value));
+        
+        // 바깥 영역 클릭 시 리스트 닫기
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('.search-container')) {
+            resultsList.style.display = 'none';
+          }
+        });
+
+        // 결과 리스트 클릭 시 카운티 선택
+        resultsList.addEventListener('click', (e) => {
+          const li = e.target.closest('li');
+          if (li && li.dataset.slug) {
+            const slug = li.dataset.slug;
+            searchInput.value = dashboardData[slug].name;
+            resultsList.style.display = 'none';
+            updateDashboard(slug);
+          }
+        });
 
       } catch (err) {
         console.error('Dashboard data load failed:', err);
