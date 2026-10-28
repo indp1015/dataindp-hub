@@ -64,7 +64,8 @@ async function renderMortgageChart() {
     if (observations.length === 0) throw new Error('No observation data');
 
     const labels = observations.map(d => d.date);
-    const values = observations.map(d => d.value);
+    // 🌟 문자열을 실수(float)로 변환하여 차트 오류 방지
+    const values = observations.map(d => parseFloat(d.value)); 
 
     const ctx = document.getElementById('mortgageChart');
     if(!ctx) return;
