@@ -721,13 +721,26 @@
       const data = dashboardData[slug];
       if (!data) return;
 
+      // 1. 스냅샷 데이터 업데이트
       document.getElementById('dash-home-price').textContent = '$' + data.home_price.toLocaleString();
       document.getElementById('dash-tax-rate').textContent = data.tax_rate ? data.tax_rate.toFixed(2) + '%' : 'N/A';
       document.getElementById('dash-market-score').textContent = data.market_score ? data.market_score.toFixed(1) + ' / 100' : 'N/A';
-      document.getElementById('dash-livability').textContent = data.livability ? data.livability.toFixed(1) + ' / 100' : 'N/A';
+      
+      const livabilityEl = document.getElementById('dash-livability');
+      if (data.livability) {
+        livabilityEl.textContent = data.livability.toFixed(1) + ' / 100';
+      } else {
+        livabilityEl.innerHTML = '<span style="font-size: 0.85em; color: #888; font-weight: normal;">Default weights</span>';
+      }
 
+      // 보험 데이터 업데이트
+      const annualIns = data.insurance_annual || 0;
+      document.getElementById('dash-insurance-annual').textContent = annualIns > 0 ? '$' + annualIns.toLocaleString() : 'N/A';
+      document.getElementById('dash-fema-risk').textContent = data.fema_risk ? data.fema_risk.toFixed(1) + ' / 100' : 'N/A';
+
+      // 2. PITI 계산
       const price = data.home_price;
-      const downPct = 20;
+      const downPct = 20; 
       const rate = globalMortgageRate;
       const taxRate = data.tax_rate || 0;
 
@@ -741,14 +754,15 @@
       }
 
       const monthlyTax = (price * (taxRate / 100)) / 12;
-      const monthlyIns = 0; 
-      const totalPITI = pi + monthlyTax + monthlyIns;
+      const monthlyIns = annualIns / 12; // 🌟 월 보험료 계산 (여기가 핵심)
+      const totalPITI = pi + monthlyTax + monthlyIns; // 🌟 총합에 보험료 포함!
 
       document.getElementById('dash-pi').textContent = '$' + Math.round(pi).toLocaleString();
       document.getElementById('dash-monthly-tax').textContent = '$' + Math.round(monthlyTax).toLocaleString();
-      document.getElementById('dash-monthly-ins').textContent = data.insurance_annual ? '$' + Math.round(data.insurance_annual / 12).toLocaleString() : 'Coming Soon';
+      document.getElementById('dash-monthly-ins').textContent = annualIns > 0 ? '$' + Math.round(monthlyIns).toLocaleString() : 'N/A';
       document.getElementById('dash-piti-total').textContent = '$' + Math.round(totalPITI).toLocaleString();
 
+      // 3. AdSense용 동적 텍스트 생성
       let analysis = `<strong>Analysis for ${data.name}:</strong> `;
       analysis += `The median home price is $${price.toLocaleString()}. `;
 
@@ -756,6 +770,11 @@
         analysis += `Property taxes are relatively high here (${taxRate.toFixed(2)}%), adding about $${Math.round(monthlyTax).toLocaleString()} to your monthly payment. `;
       } else {
         analysis += `The effective property tax rate is a manageable ${taxRate.toFixed(2)}%, costing roughly $${Math.round(monthlyTax).toLocaleString()} per month. `;
+      }
+
+      // 🌟 보험료 분석 문구 추가
+      if (annualIns > 0) {
+        analysis += `Homeowners insurance is estimated at $${annualIns.toLocaleString()} annually (about $${Math.round(monthlyIns).toLocaleString()}/month) based on FEMA climate risk data. `;
       }
 
       if (data.market_score > 60) {
