@@ -290,7 +290,67 @@ function generateDidYouKnow() {
   const randomFact = facts[Math.floor(Math.random() * facts.length)];
   document.getElementById('did-you-know-text').innerHTML = randomFact;
 }
+document.addEventListener('DOMContentLoaded', () => {
+  fetchTopLivability();
+  fetchDashboardData();
+  renderMortgageChart();
+  
+  document.querySelectorAll('.faq-item h4').forEach(item => {
+    item.addEventListener('click', () => item.parentElement.classList.toggle('active'));
+  });
 
+  // 🆕 위치 기반 카운티 자동 선택 기능
+  const locationBtn = document.getElementById('useLocationBtn');
+  if (locationBtn) {
+    locationBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser.');
+        return;
+      }
+
+      const originalText = locationBtn.textContent;
+      locationBtn.textContent = '📍 Locating...';
+
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude, longitude } = position.coords;
+        
+        try {
+          // FCC API를 사용하여 위도/경도를 카운티 FIPS 코드로 변환
+          const res = await fetch(`https://geo.fcc.gov/api/census/area?lat=${latitude}&lon=${longitude}&format=json`);
+          const data = await res.json();
+          
+          if (data.results && data.results.length > 0) {
+            const fips = data.results[0].county_fips;
+            
+            // FIPS 코드를 기반으로 우리 데이터에서 해당 카운티 찾기
+            const matchedSlug = Object.keys(dashboardData).find(slug => dashboardData[slug].fips === fips);
+            
+            if (matchedSlug) {
+              // 검색창에 이름 표시 및 대시보드 업데이트
+              document.getElementById('countySearch1').value = dashboardData[matchedSlug].name;
+              updateDashboard(matchedSlug, 1);
+            } else {
+              alert('Your location was found, but the county is not in our database (it may be outside the US).');
+            }
+          } else {
+            alert('Could not determine your county from your location.');
+          }
+        } catch (err) {
+          console.error('Location API error:', err);
+          alert('Failed to look up your location. Please search manually.');
+        } finally {
+          locationBtn.textContent = originalText;
+        }
+      }, (error) => {
+        console.error('Geolocation error:', error);
+        alert('Unable to retrieve your location. Please check your browser permissions.');
+        locationBtn.textContent = originalText;
+      });
+    });
+  }
+});
 // 🌟 초기화
 document.addEventListener('DOMContentLoaded', () => {
   fetchTopLivability();
