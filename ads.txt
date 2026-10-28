@@ -3,4 +3,4 @@ subdomain=housing.dataindp.com
 subdomain=mortgage.dataindp.com
 subdomain=propertytax.dataindp.com
 subdomain=insurance.dataindp.com
-subdomain=solar.dataindp.com/
+subdomain=solar.dataindp.com
