@@ -11,6 +11,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://dataindp.com/">
 
+  <!-- AdSense & Analytics -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2850461542641038" crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPS0MR3SX5"></script>
   <script>
@@ -20,6 +21,7 @@
     gtag('config', 'G-RPS0MR3SX5');
   </script>
 
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -41,36 +43,14 @@
       <p class="subtitle">Explore county-level <strong>home prices</strong>, <strong>livability scores</strong>, <strong>mortgage calculators</strong>, <strong>property taxes</strong>, <strong>insurance risk data</strong>, and <strong>solar ROI</strong> across 3,100+ U.S. counties — all sourced from public data. Read our <a href="/methodology.html">methodology</a> and <a href="/about.html">about</a> pages to understand how every score is built.</p>
     </header>
 
-    <!-- 5 Site Cards -->
-    <div class="links">
-      <a href="https://housing.dataindp.com" class="card">
-        <h3>🏘️ Housing &amp; Livability</h3>
-        <p>Explore <strong>Livability Scores</strong> on 6 adjustable axes (affordability, stability, momentum, safety, health, amenities), plus market scores, price trends, and county-level statistics across 3,100+ U.S. counties.</p>
-        <span class="btn">Explore Housing &amp; Livability →</span>
-      </a>
-      <a href="https://mortgage.dataindp.com" class="card">
-        <h3>💰 Mortgage Tools</h3>
-        <p>Calculate monthly payments with a full PITI breakdown, view amortization schedules, and check FHA/VA loan limits. Plan your financing with our free, transparent calculators.</p>
-        <span class="btn">Use Mortgage Tools →</span>
-      </a>
-      <a href="https://propertytax.dataindp.com" class="card">
-        <h3>🧾 Property Tax</h3>
-        <p>Find effective property tax rates and detailed tax information for every U.S. county. Understand the true, long-term cost of your next home before you commit.</p>
-        <span class="btn">Check Property Taxes →</span>
-      </a>
-      <a href="https://insurance.dataindp.com" class="card">
-        <h3>🛡️ Insurance &amp; Climate Risk</h3>
-        <p>Composite insurance risk scores for 3,100+ U.S. counties — combining FEMA climate data, county insurance premiums, and housing affordability.</p>
-        <span class="btn">Explore Insurance Risk →</span>
-      </a>
-      <a href="https://solar.dataindp.com" class="card">
-        <h3>☀️ Solar ROI &amp; Energy Savings</h3>
-        <p>Calculate county-level solar payback periods, 25-year ROI, and compare local electricity rates (EIA data). Discover how much you can save on homeownership costs with solar.</p>
-        <span class="btn">Calculate Solar ROI →</span>
-      </a>
+    <!-- 🆕 애드센스 심사 봇을 위한 정적 텍스트 (Hero Section) -->
+    <div style="background: #fff; padding: 20px 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border-left: 5px solid var(--primary);">
+      <p style="font-size: 1.1em; color: #333; margin: 0; line-height: 1.7;">
+        <strong>Welcome to the ultimate data hub for U.S. homebuyers.</strong> Whether you are calculating your monthly <em>PITI (Principal, Interest, Taxes, and Insurance)</em>, exploring local climate risks, or estimating the ROI of a solar installation, our interactive tools provide accurate, county-level insights. Start by searching for your county below to see the true, long-term cost of homeownership.
+      </p>
     </div>
 
-    <!-- 🌟 통합 대시보드 섹션 -->
+    <!-- 🌟 1. 통합 대시보드 섹션 (최상단으로 이동) -->
     <div class="content-section" id="trueCostDashboard">
       <h2>🏡 True Cost of Homeownership Dashboard</h2>
       <p>Select a county to see the complete financial picture — home price, property tax, monthly PITI, and more. Data is aggregated from our Housing, Property Tax, Insurance, and Solar platforms.</p>
@@ -149,10 +129,44 @@
         </div>
       </div>
 
-      <!-- AdSense용 동적 텍스트 -->
+      <!-- AdSense용 동적 텍스트 (JS 미작동 시 노출되는 기본 텍스트) -->
       <div id="dash-explanation" style="margin-top: 20px; padding: 15px; background: #fff; border-left: 4px solid var(--primary); font-size: 0.95em; line-height: 1.7;">
-        Select a county above to see a detailed cost analysis.
+        <strong>Interactive Analysis:</strong> Select a county above to generate a detailed cost analysis. For example, our data reveals how high property taxes in states like New Jersey can add hundreds of dollars to a monthly mortgage payment, while states like Hawaii offer strong solar ROI but carry unique climate risks.
       </div>
+    </div>
+
+    <!-- 🆕 2. 5개 서브사이트 카드 (대시보드 아래로 이동) -->
+    <div style="text-align: center; margin: 50px 0 20px;">
+      <h2 style="color: var(--primary); font-size: 1.6em; margin-bottom: 10px;">Explore Our Data Ecosystem</h2>
+      <p style="color: #666; font-size: 1.05em;">Dive deeper into specific aspects of homeownership with our dedicated platforms.</p>
+    </div>
+    
+    <div class="links">
+      <a href="https://housing.dataindp.com" class="card">
+        <h3>🏘️ Housing &amp; Livability</h3>
+        <p>Explore <strong>Livability Scores</strong> on 6 adjustable axes (affordability, stability, momentum, safety, health, amenities), plus market scores, price trends, and county-level statistics across 3,100+ U.S. counties.</p>
+        <span class="btn">Explore Housing &amp; Livability →</span>
+      </a>
+      <a href="https://mortgage.dataindp.com" class="card">
+        <h3>💰 Mortgage Tools</h3>
+        <p>Calculate monthly payments with a full PITI breakdown, view amortization schedules, and check FHA/VA loan limits. Plan your financing with our free, transparent calculators.</p>
+        <span class="btn">Use Mortgage Tools →</span>
+      </a>
+      <a href="https://propertytax.dataindp.com" class="card">
+        <h3>🧾 Property Tax</h3>
+        <p>Find effective property tax rates and detailed tax information for every U.S. county. Understand the true, long-term cost of your next home before you commit.</p>
+        <span class="btn">Check Property Taxes →</span>
+      </a>
+      <a href="https://insurance.dataindp.com" class="card">
+        <h3>🛡️ Insurance &amp; Climate Risk</h3>
+        <p>Composite insurance risk scores for 3,100+ U.S. counties — combining FEMA climate data, county insurance premiums, and housing affordability.</p>
+        <span class="btn">Explore Insurance Risk →</span>
+      </a>
+      <a href="https://solar.dataindp.com" class="card">
+        <h3>☀️ Solar ROI &amp; Energy Savings</h3>
+        <p>Calculate county-level solar payback periods, 25-year ROI, and compare local electricity rates (EIA data). Discover how much you can save on homeownership costs with solar.</p>
+        <span class="btn">Calculate Solar ROI →</span>
+      </a>
     </div>
 
     <!-- Top Livability Counties (축소된 카드 버전) -->
