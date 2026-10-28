@@ -351,13 +351,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-// 🌟 초기화
-document.addEventListener('DOMContentLoaded', () => {
-  fetchTopLivability();
-  fetchDashboardData();
-  renderMortgageChart();
-  
-  document.querySelectorAll('.faq-item h4').forEach(item => {
-    item.addEventListener('click', () => item.parentElement.classList.toggle('active'));
-  });
-});
