@@ -115,6 +115,9 @@
     .faq-item.active p { display: block; }
     .faq-item.active h4::after { content: '-'; }
 
+    /* Dashboard Select */
+    #countySelect { width: 100%; max-width: 450px; padding: 12px; font-size: 1em; border: 1px solid #ddd; border-radius: 8px; background: #fff; margin-bottom: 20px; }
+
     /* Footer */
     footer { text-align: center; margin-top: 60px; padding: 30px 20px; border-top: 1px solid #ddd; font-size: 0.9em; color: #888; }
     footer a { color: var(--primary); text-decoration: none; margin: 0 10px; font-weight: bold; }
@@ -157,10 +160,72 @@
       </a>
     </div>
 
+    <!-- 🌟 통합 대시보드 섹션 (신규 추가) -->
+    <div class="content-section" id="trueCostDashboard">
+      <h2>🏡 True Cost of Homeownership Dashboard</h2>
+      <p>Select a county to see the complete financial picture — home price, property tax, monthly PITI, and more. Data is aggregated from our Housing and Property Tax platforms.</p>
+      
+      <div>
+        <select id="countySelect">
+          <option value="">Loading counties...</option>
+        </select>
+      </div>
+
+      <div class="interactive-grid" style="margin-bottom: 0;">
+        <!-- Left: Snapshot -->
+        <div class="panel" style="background: #f8f9fa;">
+          <h2>📊 County Snapshot</h2>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Median Home Price</span>
+            <span class="snapshot-value" id="dash-home-price">-</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Effective Property Tax Rate</span>
+            <span class="snapshot-value" id="dash-tax-rate">-</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Market Score</span>
+            <span class="snapshot-value" id="dash-market-score">-</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Livability Score</span>
+            <span class="snapshot-value" id="dash-livability">-</span>
+          </div>
+          <span class="snapshot-source">Sources: U.S. Census ACS, FHFA, FBI, CDC, OpenStreetMap. Updated daily.</span>
+        </div>
+
+        <!-- Right: PITI Breakdown -->
+        <div class="panel" style="background: #fff3e0; border-left: 4px solid var(--accent);">
+          <h2 style="border-bottom-color: #ffe0b2;">💰 Estimated Monthly Payment (PITI)</h2>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Principal & Interest</span>
+            <span class="snapshot-value" id="dash-pi">-</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Property Tax</span>
+            <span class="snapshot-value" id="dash-monthly-tax">-</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Home Insurance</span>
+            <span class="snapshot-value" id="dash-monthly-ins">Coming Soon</span>
+          </div>
+          <div class="snapshot-item" style="border-top: 2px solid #ffe0b2; margin-top: 8px; padding-top: 12px;">
+            <span class="snapshot-label" style="font-weight: bold; font-size: 1.1em;">Total Monthly (PITI)</span>
+            <span class="snapshot-value" id="dash-piti-total" style="font-size: 1.3em; color: var(--accent);">-</span>
+          </div>
+          <p style="font-size: 0.8em; color: #888; margin-top: 10px;">*Based on 20% down payment, 30-year fixed mortgage at current FRED rate.</p>
+        </div>
+      </div>
+
+      <!-- AdSense용 동적 텍스트 -->
+      <div id="dash-explanation" style="margin-top: 20px; padding: 15px; background: #fff; border-left: 4px solid var(--primary); font-size: 0.95em; line-height: 1.7;">
+        Select a county above to see a detailed cost analysis.
+      </div>
+    </div>
+
     <!-- Top Livability Counties -->
     <div class="content-section">
       <h2>🏆 Top Livability Counties (<span class="currentYear">2026</span>)</h2>
-
       <p>The <strong>Livability Score</strong> is a six-axis composite designed to compare U.S. counties from a <em>residence and lifestyle</em> perspective. Each axis is first normalized into a percentile rank across all 3,100+ counties, then combined into a weighted average using the default weights below: <strong>Affordability 25%, Stability 15%, Momentum 15%, Safety 15%, Health 10%, and Amenities 20%</strong>.</p>
       <p>Each axis draws on a different public dataset. <strong>Affordability</strong> uses the median home value divided by median household income (the price-to-income ratio). <strong>Stability</strong> measures historical price volatility and drawdown history. <strong>Momentum</strong> reflects recent years of price appreciation. <strong>Safety</strong> is built from violent and property crime rates published in the FBI Uniform Crime Reporting program. <strong>Health</strong> uses five CDC PLACES indicators (obesity, diabetes, physical inactivity, high blood pressure, and mental health). <strong>Amenities</strong> measures point-of-interest density from OpenStreetMap across six categories.</p>
       <p>The table below loads the current top counties dynamically. If the table does not appear in your environment (for example, when JavaScript is disabled), the full ranking is always available on the <a href="https://housing.dataindp.com/livability.html">full Livability page</a>. Custom weights saved on your device are reflected on individual county detail pages.</p>
@@ -381,6 +446,10 @@
     const CURRENT_YEAR = new Date().getFullYear();
     document.querySelectorAll('.currentYear').forEach(el => el.textContent = CURRENT_YEAR);
 
+    // 🌟 대시보드 전역 변수
+    let dashboardData = {};
+    let globalMortgageRate = 7.0; // fetchLiveData에서 갱신됨
+
     async function fetchLiveData() {
       const housingPromise = fetch('https://housing.dataindp.com/data/live_stats.json')
         .then(r => r.ok ? r.json() : null).catch(() => null);
@@ -390,6 +459,7 @@
 
       if (housingData && housingData.mortgage_rate) {
         const rate = parseFloat(housingData.mortgage_rate);
+        globalMortgageRate = rate; // 대시보드 전역 변수 업데이트
         document.getElementById('liveRate').textContent = rate.toFixed(2) + '%';
         document.getElementById('interestRate').value = rate.toFixed(2);
         if (housingData.median_home_value) {
@@ -543,6 +613,99 @@
       document.getElementById('calcResult').style.display = 'block';
     }
 
+    // 🌟 대시보드 데이터 Fetch 및 렌더링 로직
+    async function fetchDashboardData() {
+      try {
+        const res = await fetch('https://dataindp.com/data/dashboard_data.json');
+        if (!res.ok) throw new Error('Network response was not ok');
+        const json = await res.json();
+        
+        dashboardData = json.counties || {};
+        globalMortgageRate = json.metadata.mortgage_rate_30yr || globalMortgageRate;
+
+        const select = document.getElementById('countySelect');
+        select.innerHTML = '<option value="">-- Select a County --</option>';
+
+        const sortedSlugs = Object.keys(dashboardData).sort((a, b) => 
+          dashboardData[a].name.localeCompare(dashboardData[b].name)
+        );
+
+        sortedSlugs.forEach(slug => {
+          const option = document.createElement('option');
+          option.value = slug;
+          option.textContent = dashboardData[slug].name;
+          select.appendChild(option);
+        });
+
+        select.addEventListener('change', (e) => {
+          if (e.target.value) updateDashboard(e.target.value);
+        });
+
+        if (sortedSlugs.length > 0) {
+          select.value = sortedSlugs[0];
+          updateDashboard(sortedSlugs[0]);
+        }
+
+      } catch (err) {
+        console.error('Dashboard data load failed:', err);
+        document.getElementById('dash-explanation').textContent = 'Dashboard data is currently unavailable. Please try again later.';
+      }
+    }
+
+    function updateDashboard(slug) {
+      const data = dashboardData[slug];
+      if (!data) return;
+
+      document.getElementById('dash-home-price').textContent = '$' + data.home_price.toLocaleString();
+      document.getElementById('dash-tax-rate').textContent = data.tax_rate ? data.tax_rate.toFixed(2) + '%' : 'N/A';
+      document.getElementById('dash-market-score').textContent = data.market_score ? data.market_score.toFixed(1) + ' / 100' : 'N/A';
+      document.getElementById('dash-livability').textContent = data.livability ? data.livability.toFixed(1) + ' / 100' : 'N/A';
+
+      const price = data.home_price;
+      const downPct = 20;
+      const rate = globalMortgageRate;
+      const taxRate = data.tax_rate || 0;
+
+      const loanAmount = price * (1 - (downPct / 100));
+      const monthlyRate = (rate / 100) / 12;
+      const numPayments = 30 * 12;
+
+      let pi = 0;
+      if (loanAmount > 0 && rate > 0) {
+        pi = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+      }
+
+      const monthlyTax = (price * (taxRate / 100)) / 12;
+      const monthlyIns = 0; 
+      const totalPITI = pi + monthlyTax + monthlyIns;
+
+      document.getElementById('dash-pi').textContent = '$' + Math.round(pi).toLocaleString();
+      document.getElementById('dash-monthly-tax').textContent = '$' + Math.round(monthlyTax).toLocaleString();
+      document.getElementById('dash-monthly-ins').textContent = data.insurance_annual ? '$' + Math.round(data.insurance_annual / 12).toLocaleString() : 'Coming Soon';
+      document.getElementById('dash-piti-total').textContent = '$' + Math.round(totalPITI).toLocaleString();
+
+      let analysis = `<strong>Analysis for ${data.name}:</strong> `;
+      analysis += `The median home price is $${price.toLocaleString()}. `;
+
+      if (taxRate > 1.5) {
+        analysis += `Property taxes are relatively high here (${taxRate.toFixed(2)}%), adding about $${Math.round(monthlyTax).toLocaleString()} to your monthly payment. `;
+      } else {
+        analysis += `The effective property tax rate is a manageable ${taxRate.toFixed(2)}%, costing roughly $${Math.round(monthlyTax).toLocaleString()} per month. `;
+      }
+
+      if (data.market_score > 60) {
+        analysis += `The local housing market is currently rated highly (Market Score: ${data.market_score.toFixed(1)}/100), indicating strong fundamentals. `;
+      } else if (data.market_score > 0) {
+        analysis += `The market shows a moderate score of ${data.market_score.toFixed(1)}/100, reflecting mixed conditions. `;
+      }
+
+      if (data.livability) {
+        analysis += `With a Livability Score of ${data.livability.toFixed(1)}, this county offers a solid quality of life relative to national averages. `;
+      }
+
+      document.getElementById('dash-explanation').innerHTML = analysis;
+    }
+
     document.querySelectorAll('.faq-item h4').forEach(item => {
       item.addEventListener('click', () => item.parentElement.classList.toggle('active'));
     });
@@ -551,6 +714,7 @@
       fetchLiveData();
       fetchTopLivability();
       calculateMortgage();
+      fetchDashboardData(); // 🌟 대시보드 데이터 로드 추가
     });
   </script>
 </body>
