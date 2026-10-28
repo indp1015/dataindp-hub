@@ -115,14 +115,7 @@
     .faq-item.active p { display: block; }
     .faq-item.active h4::after { content: '-'; }
 
-    /* Dashboard Select */
-    #countySelect { width: 100%; max-width: 450px; padding: 12px; font-size: 1em; border: 1px solid #ddd; border-radius: 8px; background: #fff; margin-bottom: 20px; }
-
-    /* Footer */
-    footer { text-align: center; margin-top: 60px; padding: 30px 20px; border-top: 1px solid #ddd; font-size: 0.9em; color: #888; }
-    footer a { color: var(--primary); text-decoration: none; margin: 0 10px; font-weight: bold; }
-    footer a:hover { text-decoration: underline; }
-        /* Dashboard Search */
+    /* Dashboard Search */
     .search-container { position: relative; max-width: 450px; margin-bottom: 20px; }
     #countySearch { width: 100%; padding: 12px; font-size: 1em; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
     #countySearch:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26, 61, 92, 0.2); }
@@ -130,6 +123,11 @@
     .search-results li { padding: 10px 15px; cursor: pointer; border-bottom: 1px solid #eee; font-size: 0.95em; }
     .search-results li:hover, .search-results li.active { background: #f0f8ff; color: var(--primary); }
     .search-results li:last-child { border-bottom: none; }
+
+    /* Footer */
+    footer { text-align: center; margin-top: 60px; padding: 30px 20px; border-top: 1px solid #ddd; font-size: 0.9em; color: #888; }
+    footer a { color: var(--primary); text-decoration: none; margin: 0 10px; font-weight: bold; }
+    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -168,7 +166,7 @@
       </a>
     </div>
 
-    <!-- 🌟 통합 대시보드 섹션 (신규 추가) -->
+    <!-- 🌟 통합 대시보드 섹션 -->
     <div class="content-section" id="trueCostDashboard">
       <h2>🏡 True Cost of Homeownership Dashboard</h2>
       <p>Select a county to see the complete financial picture — home price, property tax, monthly PITI, and more. Data is aggregated from our Housing and Property Tax platforms.</p>
@@ -190,6 +188,15 @@
             <span class="snapshot-label">Effective Property Tax Rate</span>
             <span class="snapshot-value" id="dash-tax-rate">-</span>
           </div>
+          <!-- 🌟 보험 및 FEMA 리스크 항목 추가됨 -->
+          <div class="snapshot-item">
+            <span class="snapshot-label">Annual Insurance Premium</span>
+            <span class="snapshot-value" id="dash-insurance-annual">-</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">FEMA Climate Risk Score</span>
+            <span class="snapshot-value" id="dash-fema-risk">-</span>
+          </div>
           <div class="snapshot-item">
             <span class="snapshot-label">Market Score</span>
             <span class="snapshot-value" id="dash-market-score">-</span>
@@ -198,7 +205,6 @@
             <span class="snapshot-label">Livability Score</span>
             <span class="snapshot-value" id="dash-livability">-</span>
           </div>
-          <!-- 🌟 Livability 안내 문구 및 링크 추가 -->
           <div style="font-size: 0.8em; color: #666; margin-bottom: 15px; margin-top: 0; line-height: 1.4;">
             *Based on default weights. 
             <a href="https://housing.dataindp.com/livability.html" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Calculate your own score →</a>
@@ -220,7 +226,7 @@
           </div>
           <div class="snapshot-item">
             <span class="snapshot-label">Home Insurance</span>
-            <span class="snapshot-value" id="dash-monthly-ins">Coming Soon</span>
+            <span class="snapshot-value" id="dash-monthly-ins">-</span>
           </div>
           <div class="snapshot-item" style="border-top: 2px solid #ffe0b2; margin-top: 8px; padding-top: 12px;">
             <span class="snapshot-label" style="font-weight: bold; font-size: 1.1em;">Total Monthly (PITI)</span>
@@ -663,7 +669,7 @@
           }
         });
 
-        // --- 이하 UI 렌더링 로직은 기존과 동일 ---
+        // --- 이하 UI 렌더링 로직 ---
         const searchInput = document.getElementById('countySearch');
         const resultsList = document.getElementById('countyResults');
         
@@ -754,7 +760,7 @@
       }
 
       const monthlyTax = (price * (taxRate / 100)) / 12;
-      const monthlyIns = annualIns / 12; // 🌟 월 보험료 계산 (여기가 핵심)
+      const monthlyIns = annualIns / 12; // 🌟 월 보험료 계산
       const totalPITI = pi + monthlyTax + monthlyIns; // 🌟 총합에 보험료 포함!
 
       document.getElementById('dash-pi').textContent = '$' + Math.round(pi).toLocaleString();
