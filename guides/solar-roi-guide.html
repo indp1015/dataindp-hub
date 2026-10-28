@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Understanding Solar Payback Periods and ROI - Data in DP</title>
+  <meta name="description" content="Learn how to calculate solar payback periods using EIA electricity rates, NREL solar data, and the 30% federal ITC. Understand the long-term ROI of home solar.">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; color: #333; line-height: 1.8; }
+    .container { max-width: 820px; margin: 40px auto; padding: 40px 20px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    h1 { color: #1a3d5c; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+    h2 { color: #1a3d5c; margin-top: 30px; font-size: 1.2em; }
+    h3 { color: #1a3d5c; margin-top: 22px; font-size: 1.05em; }
+    a { color: #1a3d5c; text-decoration: none; font-weight: bold; }
+    a:hover { text-decoration: underline; }
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 0.9em; }
+    .lead { font-size: 1.08em; color: #444; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 8px; }
+    .note { background:#f0f4f8; border-left:4px solid #1a3d5c; padding:12px 16px; border-radius:4px; font-size:0.95em; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/guides/" class="back-link">← Back to Guides</a>
+    <h1>Understanding Solar Payback Periods and ROI</h1>
+    <p class="lead">Solar panels are a long-term investment. Unlike a new roof or a kitchen remodel, solar has a measurable financial return: it generates electricity that you would otherwise buy from the utility. The key metric is the <strong>payback period</strong> — the number of years it takes for your energy savings to equal the net cost of the system.</p>
+
+    <h2>1. The Core Formula</h2>
+    <p>At its simplest, the payback period is calculated as: <code>Net System Cost ÷ Annual Electricity Savings</code>. However, several variables make the real-world calculation more complex: the federal tax credit, local electricity rates, solar production, and annual rate escalation.</p>
+
+    <h2>2. The 30% Federal Investment Tax Credit (ITC)</h2>
+    <p>The federal government currently offers a 30% tax credit on the total installed cost of a residential solar system. This is a dollar-for-dollar reduction in your federal tax liability. If a system costs $20,000, the ITC reduces the net cost to $14,000. This single incentive dramatically shortens the payback period.</p>
+
+    <h2>3. Electricity Rates: The Biggest Variable</h2>
+    <p>Your savings depend on the retail electricity rate you are avoiding. States with high electricity rates (like Hawaii, California, and Massachusetts) have much faster solar payback periods than states with cheap grid power (like North Dakota or Louisiana).</p>
+    <p>We use data from the U.S. Energy Information Administration (EIA) to model state-level rates. We also assume a 2.5% annual escalation rate in electricity prices, because utility rates have historically risen faster than inflation. This assumption makes the long-term ROI more realistic.</p>
+
+    <h2>4. Solar Production (NREL Data)</h2>
+    <p>How much electricity a system generates depends on where it is located. A system in Phoenix will produce more power than an identical system in Seattle. We use the National Renewable Energy Laboratory (NREL) National Solar Radiation Database (NSRDB) to estimate production based on a 10-year average of solar radiation data.</p>
+
+    <h2>5. Panel Degradation</h2>
+    <p>Solar panels lose efficiency over time. A standard assumption is a 0.5% annual degradation rate. This means a panel that produces 100 units of electricity in year one will produce roughly 99.5 units in year two, and so on. Over 25 years, this slightly reduces total lifetime savings, but the effect is small compared to the impact of electricity rates.</p>
+
+    <h2>6. Calculating the 25-Year ROI</h2>
+    <p>The 25-year ROI is calculated by summing the estimated savings from year 1 to year 25 (accounting for both rate escalation and panel degradation) and dividing that total by the net system cost. An ROI of 150% means you recover your initial investment and earn an additional 50% in savings.</p>
+
+    <div class="note">
+      <strong>Important:</strong> Our estimates are for educational purposes and assume standard installation conditions. Actual solar costs depend on roof condition, shading, local installer pricing, and utility net-metering policies. Consult a local installer for a precise quote. <a href="https://solar.dataindp.com">Calculate your county's solar ROI here</a>.
+    </div>
+
+    <p style="margin-top:30px;"><a href="/guides/">← Back to Guides</a></p>
+  </div>
+</body>
+</html>

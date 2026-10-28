@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Housing Market &amp; Livability Data for 3,100+ U.S. Counties</title>
-  <meta name="description" content="Explore county-level Livability Scores, housing trends, mortgage calculators, property tax rates, and insurance risk data across 3,100+ U.S. counties. Built from U.S. Census, FEMA, FBI, CDC, and OpenStreetMap data.">
+  <title>U.S. Housing, Livability, Mortgage &amp; Solar ROI Data Hub</title>
+  <meta name="description" content="Explore county-level home prices, livability scores, mortgage calculators, property taxes, insurance risk data, and solar ROI across 3,100+ U.S. counties. Built from U.S. Census, FEMA, EIA, NREL, and OpenStreetMap data.">
 
   <!-- Open Graph / Social -->
-  <meta property="og:title" content="Housing Market &amp; Livability Data for 3,100+ U.S. Counties">
-  <meta property="og:description" content="County-level livability scores, housing trends, mortgage tools, property tax, and climate risk data — all in one hub.">
+  <meta property="og:title" content="U.S. Housing, Livability, Mortgage &amp; Solar ROI Data Hub">
+  <meta property="og:description" content="County-level home prices, livability scores, mortgage tools, property tax, climate risk, and solar ROI data — all in one hub.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://dataindp.com/">
 
@@ -30,7 +30,7 @@
     "@type": "WebSite",
     "name": "Data in DP",
     "url": "https://dataindp.com",
-    "description": "U.S. housing market, county livability, mortgage, and property tax data hub.",
+    "description": "U.S. housing market, county livability, mortgage, property tax, insurance, and solar ROI data hub.",
     "inLanguage": "en-US"
   }
   </script>
@@ -42,12 +42,11 @@
 
     header { text-align: center; margin-bottom: 40px; }
     h1 { color: var(--primary); margin-bottom: 10px; font-size: 2.5em; }
-    .subtitle { font-size: 1.2em; color: #666; max-width: 720px; margin: 0 auto; }
+    .subtitle { font-size: 1.2em; color: #666; max-width: 780px; margin: 0 auto; }
     .subtitle a { color: var(--primary); font-weight: bold; }
 
     /* Tool Cards */
-    .links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 40px; }
-    @media (max-width: 640px) { .links { grid-template-columns: 1fr; } }
+    .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 40px; }
     .card { background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-decoration: none; color: var(--text); transition: transform 0.2s, box-shadow 0.2s; border-top: 5px solid var(--primary); display: flex; flex-direction: column; }
     .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
     .card h3 { margin-top: 0; color: var(--primary); font-size: 1.4em; }
@@ -101,8 +100,7 @@
     .noscript-note { background: #fff8e1; border-left: 4px solid #f0ad4e; padding: 12px 15px; border-radius: 4px; font-size: 0.92em; color: #664d03; margin: 12px 0; }
 
     /* Guide cards */
-    .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
-    @media (max-width: 900px) { .guide-grid { grid-template-columns: 1fr; } }
+    .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 20px; }
     .guide-card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 20px; text-decoration: none; color: var(--text); transition: box-shadow 0.2s, transform 0.2s; display: flex; flex-direction: column; }
     .guide-card:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.08); transform: translateY(-3px); }
     .guide-card h4 { color: var(--primary); margin: 0 0 8px; font-size: 1.05em; }
@@ -126,15 +124,15 @@
 <body>
   <div class="container">
     <header>
-      <h1>U.S. Housing Market, Livability &amp; Mortgage Data Hub</h1>
-      <p class="subtitle">Explore county-level <strong>Livability Scores</strong>, housing market trends, mortgage calculators, property tax rates, and <strong>climate risk &amp; insurance data</strong> across 3,100+ U.S. counties — all sourced from public data. Read our <a href="/methodology.html">methodology</a> and <a href="/about.html">about</a> pages to understand how every score is built.</p>
+      <h1>U.S. Housing, Livability, Mortgage &amp; Solar ROI Data Hub</h1>
+      <p class="subtitle">Explore county-level <strong>home prices</strong>, <strong>livability scores</strong>, <strong>mortgage calculators</strong>, <strong>property taxes</strong>, <strong>insurance risk data</strong>, and <strong>solar ROI</strong> across 3,100+ U.S. counties — all sourced from public data. Read our <a href="/methodology.html">methodology</a> and <a href="/about.html">about</a> pages to understand how every score is built.</p>
     </header>
 
-    <!-- 4 Site Cards -->
+    <!-- 5 Site Cards -->
     <div class="links">
       <a href="https://housing.dataindp.com" class="card">
         <h3>🏘️ Housing &amp; Livability</h3>
-        <p>Explore <strong>Livability Scores</strong> on 6 adjustable axes (affordability, stability, momentum, safety, health, amenities), plus market scores, price trends, and county-level statistics across 3,100+ U.S. counties. Discover which markets are booming and which offer the best quality of life.</p>
+        <p>Explore <strong>Livability Scores</strong> on 6 adjustable axes (affordability, stability, momentum, safety, health, amenities), plus market scores, price trends, and county-level statistics across 3,100+ U.S. counties.</p>
         <span class="btn">Explore Housing &amp; Livability →</span>
       </a>
       <a href="https://mortgage.dataindp.com" class="card">
@@ -149,8 +147,13 @@
       </a>
       <a href="https://insurance.dataindp.com" class="card">
         <h3>🛡️ Insurance &amp; Climate Risk</h3>
-        <p>Composite insurance risk scores for 3,100+ U.S. counties — combining FEMA climate data, county insurance premiums, and housing affordability. Includes a full PITI calculator and 6 non-standard risk guides (flood, earthquake, wildfire, hurricane, tornado, landslide).</p>
+        <p>Composite insurance risk scores for 3,100+ U.S. counties — combining FEMA climate data, county insurance premiums, and housing affordability.</p>
         <span class="btn">Explore Insurance Risk →</span>
+      </a>
+      <a href="https://solar.dataindp.com" class="card">
+        <h3>☀️ Solar ROI &amp; Energy Savings</h3>
+        <p>Calculate county-level solar payback periods, 25-year ROI, and compare local electricity rates (EIA data). Discover how much you can save on homeownership costs with solar.</p>
+        <span class="btn">Calculate Solar ROI →</span>
       </a>
     </div>
 
@@ -158,10 +161,9 @@
     <div class="content-section">
       <h2>🏆 Top Livability Counties (<span class="currentYear">2026</span>)</h2>
 
-      <!-- Always-visible explanatory text (readable by crawlers and no-JS visitors) -->
       <p>The <strong>Livability Score</strong> is a six-axis composite designed to compare U.S. counties from a <em>residence and lifestyle</em> perspective. Each axis is first normalized into a percentile rank across all 3,100+ counties, then combined into a weighted average using the default weights below: <strong>Affordability 25%, Stability 15%, Momentum 15%, Safety 15%, Health 10%, and Amenities 20%</strong>.</p>
-      <p>Each axis draws on a different public dataset. <strong>Affordability</strong> uses the median home value divided by median household income (the price-to-income ratio). <strong>Stability</strong> measures historical price volatility and drawdown history. <strong>Momentum</strong> reflects recent years of price appreciation. <strong>Safety</strong> is built from violent and property crime rates published in the FBI Uniform Crime Reporting program. <strong>Health</strong> uses five CDC PLACES indicators (obesity, diabetes, physical inactivity, high blood pressure, and mental health). <strong>Amenities</strong> measures point-of-interest density from OpenStreetMap across six categories: education, healthcare, sustenance, finance, entertainment, and grocery.</p>
-      <p>The table below loads the current top counties dynamically. If the table does not appear in your environment (for example, when JavaScript is disabled), the full ranking is always available on the <a href="https://housing.dataindp.com/livability.html">full Livability page</a>. Custom weights saved on your device are reflected on individual county detail pages, so those scores may differ from the defaults shown here. The complete formula and all data sources are documented on our <a href="/methodology.html">Methodology page</a>.</p>
+      <p>Each axis draws on a different public dataset. <strong>Affordability</strong> uses the median home value divided by median household income (the price-to-income ratio). <strong>Stability</strong> measures historical price volatility and drawdown history. <strong>Momentum</strong> reflects recent years of price appreciation. <strong>Safety</strong> is built from violent and property crime rates published in the FBI Uniform Crime Reporting program. <strong>Health</strong> uses five CDC PLACES indicators (obesity, diabetes, physical inactivity, high blood pressure, and mental health). <strong>Amenities</strong> measures point-of-interest density from OpenStreetMap across six categories.</p>
+      <p>The table below loads the current top counties dynamically. If the table does not appear in your environment (for example, when JavaScript is disabled), the full ranking is always available on the <a href="https://housing.dataindp.com/livability.html">full Livability page</a>. Custom weights saved on your device are reflected on individual county detail pages.</p>
 
       <noscript>
         <div class="noscript-note">
@@ -198,21 +200,26 @@
     <!-- Featured Guides -->
     <div class="content-section">
       <h2>📚 Featured Data Guides</h2>
-      <p>These in-depth, original guides explain how to read the data on this site, where it comes from, and how to use it for real housing decisions. Each guide is written for readers who want to go beyond the headline numbers and understand the assumptions behind every score.</p>
+      <p>These in-depth, original guides explain how to read the data on this site, where it comes from, and how to use it for real housing decisions. Each guide is written for readers who want to go beyond the headline numbers.</p>
       <div class="guide-grid">
         <a class="guide-card" href="/guides/livability-score-guide.html">
-          <h4>The Livability Score Explained: Six Axes and How to Read Them</h4>
-          <p>What the six axes actually measure, how percentile ranking works, how to adjust weights, and the limitations every reader should know before comparing counties.</p>
+          <h4>The Livability Score Explained</h4>
+          <p>What the six axes measure, how percentile ranking works, and the limitations every reader should know.</p>
           <span class="read">Read the guide →</span>
         </a>
         <a class="guide-card" href="/guides/property-tax-guide.html">
           <h4>How to Read an Effective Property Tax Rate</h4>
-          <p>The difference between nominal and effective tax rates, why counties differ so much, the limits of ACS data, and how property tax fits into a PITI payment.</p>
+          <p>The difference between nominal and effective tax rates and how property tax fits into a PITI payment.</p>
           <span class="read">Read the guide →</span>
         </a>
         <a class="guide-card" href="/guides/climate-risk-insurance-guide.html">
-          <h4>Climate Risk and Insurance Premiums: Using FEMA Data</h4>
-          <p>How the FEMA National Risk Index, county premium estimates, and the six perils that standard HO-3 policies often exclude fit together into a composite risk score.</p>
+          <h4>Climate Risk and Insurance Premiums</h4>
+          <p>How FEMA data, county premiums, and standard HO-3 exclusions fit together into a composite risk score.</p>
+          <span class="read">Read the guide →</span>
+        </a>
+        <a class="guide-card" href="/guides/solar-roi-guide.html">
+          <h4>Understanding Solar Payback Periods</h4>
+          <p>How electricity rates, NREL solar data, and the 30% federal ITC combine to determine your long-term ROI.</p>
           <span class="read">Read the guide →</span>
         </a>
       </div>
@@ -223,7 +230,6 @@
     <div class="interactive-grid">
       <div class="panel">
         <h2>📊 Market Snapshot (Live)</h2>
-        <!-- Static fallback values are embedded in the HTML so crawlers and no-JS visitors see real numbers. -->
         <div class="snapshot-item">
           <span class="snapshot-label">30-Yr Fixed Mortgage Rate</span>
           <span class="snapshot-value" id="liveRate">7.40%</span>
@@ -245,7 +251,7 @@
 
       <div class="panel">
         <h2>🧮 Quick Mortgage Calculator</h2>
-        <p style="font-size:0.9em;color:#666;margin-top:0;">This calculator estimates the four components of a monthly PITI payment: principal and interest, property tax, and homeowners insurance. It does not include HOA dues, private mortgage insurance (PMI), or maintenance. Results are illustrative only and are not a loan offer. Assumptions are documented on our <a href="/methodology.html">methodology page</a>.</p>
+        <p style="font-size:0.9em;color:#666;margin-top:0;">This calculator estimates the four components of a monthly PITI payment. It does not include HOA dues, PMI, or maintenance. Results are illustrative only and are not a loan offer. <a href="/methodology.html">See assumptions</a>.</p>
         <div class="calc-group">
           <label>Home Price ($)</label>
           <input type="number" id="homePrice" value="400000" min="10000">
@@ -279,23 +285,22 @@
     <!-- Market Insights -->
     <div class="content-section">
       <h2>Current U.S. Real Estate Market Insights</h2>
-      <p>Navigating the U.S. real estate market requires understanding the delicate balance between home prices, mortgage rates, and local tax burdens. In today's environment, buyers and investors must look beyond the listing price to grasp the full financial picture — and increasingly, quality-of-life factors such as safety, health, and amenities play a role in where people choose to live.</p>
+      <p>Navigating the U.S. real estate market requires understanding the delicate balance between home prices, mortgage rates, and local tax burdens. In today's environment, buyers and investors must look beyond the listing price to grasp the full financial picture — and increasingly, quality-of-life factors and energy costs play a role in where people choose to live.</p>
 
       <h3>1. The Impact of Mortgage Rates on Affordability</h3>
-      <p>Over the past few years, the 30-year fixed mortgage rate has experienced significant volatility, heavily influencing buyer purchasing power. When rates rise, even a one percentage point increase can add hundreds of dollars to a monthly payment on a typical loan. Our <strong>Mortgage Tools</strong> section is designed to help you navigate this. By using amortization schedules and FHA/VA loan limit calculators, prospective buyers can model their monthly obligations accurately. Understanding loan limits — especially the differences between conforming loans and FHA loans — is important for securing favorable terms in competitive markets.</p>
-      <p>It is also worth separating <em>nominal</em> affordability from <em>effective</em> affordability. A county with lower home prices but higher property taxes and insurance premiums can end up costing more per month than a higher-priced county with low carrying costs. Our PITI-based tools are built specifically to make these trade-offs visible, and our <a href="/guides/property-tax-guide.html">property tax guide</a> explains how to read effective tax rates correctly.</p>
+      <p>Over the past few years, the 30-year fixed mortgage rate has experienced significant volatility. When rates rise, even a one percentage point increase can add hundreds of dollars to a monthly payment. It is also worth separating <em>nominal</em> affordability from <em>effective</em> affordability. A county with lower home prices but higher property taxes and insurance premiums can end up costing more per month than a higher-priced county with low carrying costs. Our PITI-based tools make these trade-offs visible.</p>
 
       <h3>2. Housing Market Momentum and Stability</h3>
-      <p>The housing market is not a monolith; it is a collection of thousands of local micro-economies. Our <strong>Housing &amp; Livability</strong> platform analyzes county-level data to determine market phases — ranging from "Boom" to "Recovering" — alongside a separate <strong>Livability Score</strong> across six axes. Where the Market Score focuses on investment dynamics across four axes, Livability focuses on residence and lifestyle across six axes: affordability, stability, momentum, safety, health, and amenities. Adjusting the weights lets you see which counties best fit your own priorities. A detailed breakdown of both scoring systems is available on our <a href="/methodology.html">methodology page</a>.</p>
+      <p>The housing market is not a monolith; it is a collection of thousands of local micro-economies. Our <strong>Housing &amp; Livability</strong> platform analyzes county-level data to determine market phases alongside a separate <strong>Livability Score</strong> across six axes. Where the Market Score focuses on investment dynamics, Livability focuses on residence and lifestyle. Adjusting the weights lets you see which counties best fit your own priorities.</p>
 
-      <h3>3. The Hidden Cost: Property Taxes</h3>
-      <p>A common oversight for homebuyers is underestimating property taxes. Effective property tax rates can vary drastically from one state to another, and even from county to county within the same state. In some regions, high property taxes can significantly erode the return on investment for rental properties. Our <strong>Property Tax</strong> database provides transparency, offering effective tax rates for more than 3,000 counties. This allows users to calculate the true, long-term cost of homeownership before making a commitment. For a full walkthrough of how these rates are derived, see our <a href="/guides/property-tax-guide.html">effective property tax guide</a>.</p>
+      <h3>3. The Hidden Cost: Property Taxes and Insurance</h3>
+      <p>A common oversight for homebuyers is underestimating property taxes and insurance. Effective property tax rates can vary drastically from one state to another. In some regions, high property taxes can significantly erode the return on investment for rental properties. Furthermore, climate risk is increasingly a pricing factor. FEMA's National Risk Index and county-level premium data reveal that two otherwise similar homes can carry very different insurance burdens.</p>
 
-      <h3>4. Climate Risk Is Becoming a Pricing Factor</h3>
-      <p>Insurance premiums and climate risk are increasingly part of the true cost of a home. FEMA's National Risk Index and county-level premium data together reveal that two otherwise similar homes can carry very different insurance burdens. Our <strong>Insurance &amp; Climate Risk</strong> section combines these sources into a composite score and publishes dedicated guides for the six perils that standard HO-3 policies often exclude or cap: flood, earthquake, wildfire, hurricane, tornado, and landslide. Buyers should treat climate risk as a long-horizon cost rather than a one-time surprise. Our <a href="/guides/climate-risk-insurance-guide.html">climate risk guide</a> explains the underlying data.</p>
-
+      <h3>4. Solar ROI as a Homeownership Cost Offset</h3>
+      <p>As electricity rates rise, homeowners are increasingly looking at solar energy not just as an environmental choice, but as a financial hedge. Our <strong>Solar ROI</strong> platform combines EIA electricity rate data with NREL solar radiation data to calculate county-level payback periods. In states with high utility rates, a solar installation can pay for itself in under a decade, effectively offsetting a significant portion of the long-term costs of homeownership.</p>
+      
       <h3>5. How to Use This Site Responsibly</h3>
-      <p>All data on this site is derived from public sources — the U.S. Census Bureau's American Community Survey, FHFA, FRED, HUD, FBI Uniform Crime Reporting, FEMA, CDC PLACES, and OpenStreetMap — and is intended for education and research. It is not financial, legal, or real estate advice. County averages can mask block-level variation, and percentile scores describe relative position rather than absolute quality. We document these limitations on our <a href="/methodology.html">methodology page</a> so that readers can judge the data for themselves.</p>
+      <p>All data on this site is derived from public sources and is intended for education and research. It is not financial, legal, or real estate advice. County averages can mask block-level variation, and percentile scores describe relative position rather than absolute quality. We document these limitations on our <a href="/methodology.html">methodology page</a> so that readers can judge the data for themselves.</p>
     </div>
 
     <!-- FAQ -->
@@ -304,61 +309,53 @@
 
       <div class="faq-item">
         <h4>What is the Livability Score, and how is it different from the Market Score?</h4>
-        <p>Livability Score is a six-axis composite (affordability, stability, momentum, safety, health, amenities) built for residence and lifestyle decisions. Market Score is a separate four-axis composite (affordability, stability, momentum, vitality) built for investment evaluation. Both use percentile ranking across all U.S. counties. You can adjust Livability weights to match your own priorities on the <a href="https://housing.dataindp.com/livability.html">Livability page</a>, and read the full formula on our <a href="/methodology.html">methodology page</a>.</p>
-      </div>
-
-      <div class="faq-item">
-        <h4>How is the Market Score calculated on the Housing site?</h4>
-        <p>Our Market Score is a composite metric (0–100) derived from four key pillars: Affordability (30%), Stability (25%), Momentum (25%), and Vitality (20%). We use percentile ranking normalization across 3,100+ U.S. counties. Affordability is based on the price-to-income ratio, Stability tracks historical price volatility, Momentum measures recent appreciation, and Vitality looks at owner-occupancy and employment data.</p>
+        <p>Livability Score is a six-axis composite built for residence and lifestyle decisions. Market Score is a separate four-axis composite built for investment evaluation. Both use percentile ranking across all U.S. counties. You can adjust Livability weights to match your own priorities on the <a href="https://housing.dataindp.com/livability.html">Livability page</a>.</p>
       </div>
 
       <div class="faq-item">
         <h4>Where does the safety, health, and amenity data come from?</h4>
-        <p>Safety uses FBI Uniform Crime Reporting data (violent and property crime rates) with calibrated corrections for New York City boroughs and Washington, D.C. Health uses CDC PLACES estimates across five indicators (obesity, diabetes, physical inactivity, high blood pressure, mental health). Amenities uses OpenStreetMap point-of-interest density across six categories (education, healthcare, sustenance, finance, entertainment, grocery). All three are public datasets — full attribution appears in our <a href="/about.html">About section</a>.</p>
+        <p>Safety uses FBI Uniform Crime Reporting data. Health uses CDC PLACES estimates across five indicators. Amenities uses OpenStreetMap point-of-interest density. All three are public datasets — full attribution appears in our <a href="/about.html">About section</a>.</p>
       </div>
 
       <div class="faq-item">
-        <h4>Are the FHA and VA loan limits on your site accurate for <span class="currentYear">2026</span>?</h4>
-        <p>Yes. Our Mortgage site uses the official HUD formulas and FHFA data to calculate conforming and FHA loan limits. We apply the official formula: <strong>FHA = min(1,209,750, max(541,287, 0.65 × conforming))</strong> to ensure accuracy even in areas where raw datasets contain missing values.</p>
+        <h4>Why do property taxes and insurance premiums vary so much between counties?</h4>
+        <p>Property taxes are determined by local government budget needs and assessment practices. Insurance premiums reflect local hazard exposure (e.g., flood, wildfire) and the cost of rebuilding. Our <a href="/guides/property-tax-guide.html">property tax guide</a> and <a href="/guides/climate-risk-insurance-guide.html">climate risk guide</a> explain how to interpret these differences.</p>
       </div>
 
       <div class="faq-item">
-        <h4>Why do property taxes vary so much between counties?</h4>
-        <p>Property taxes are primarily determined by local government budget needs (for schools, infrastructure, and services) and the total assessed value of properties in that area. Some states rely heavily on property taxes, while others rely more on sales or income taxes. Our Property Tax site pulls the latest ACS 5-Year Estimates to show you the <em>effective tax rate</em> — the actual percentage of your home's value paid annually. See our <a href="/guides/property-tax-guide.html">property tax guide</a> for a full explanation.</p>
+        <h4>How is the solar payback period calculated?</h4>
+        <p>We calculate net cost after the 30% federal Investment Tax Credit (ITC), then accumulate annual savings year-by-year (accounting for a 2.5% rate escalation and 0.5% panel degradation). The data relies on NREL solar radiation estimates and EIA electricity rates. Read our <a href="/guides/solar-roi-guide.html">solar ROI guide</a> for details.</p>
       </div>
 
       <div class="faq-item">
         <h4>Can I use your calculators for investment properties?</h4>
-        <p>Absolutely. While our primary focus is on primary residences, our calculators can be used for investment properties. Note that investment property mortgage rates are typically 0.5% to 1.0% higher than primary residence rates, and property taxes may be reassessed upon purchase depending on state law.</p>
-      </div>
-
-      <div class="faq-item">
-        <h4>Where does the climate and insurance risk data come from?</h4>
-        <p>Our Insurance site combines FEMA's National Risk Index (climate safety, hazard exposure), Census ACS 5-Year Estimates (median home value, population), and county-level insurance premium data derived from the HearthMap dataset (NBER Working Paper 32579, licensed CC BY 4.0). Composite risk scores are percentile rankings across all U.S. counties. We also provide six non-standard risk guides covering flood, earthquake, wildfire, hurricane, tornado, and landslide — the risks that standard HO-3 policies do not fully cover. Read our <a href="/guides/climate-risk-insurance-guide.html">climate risk guide</a> for details.</p>
+        <p>Yes, but note that investment property mortgage rates are typically 0.5% to 1.0% higher than primary residence rates, and property taxes may be reassessed upon purchase depending on state law.</p>
       </div>
 
       <div class="faq-item">
         <h4>Why do I see a fixed value before live data loads?</h4>
-        <p>To keep the page readable for every visitor — including those on slow connections or with JavaScript disabled — we display recent reference values directly in the HTML. When live data feeds are reachable, the JavaScript layer replaces those values with the latest figures. This approach also ensures that search engines and accessibility tools can read the page content without executing scripts.</p>
+        <p>To keep the page readable for every visitor — including those on slow connections or with JavaScript disabled — we display recent reference values directly in the HTML. When live data feeds are reachable, the JavaScript layer replaces those values with the latest figures.</p>
       </div>
     </div>
 
     <!-- Data Sources -->
     <div class="content-section">
       <h2>About Data in DP &amp; Our Data Sources</h2>
-      <p>Data in DP was created to democratize access to complex real estate data. We believe that informed decisions are the best decisions — whether you are buying your first home, refinancing a mortgage, or comparing quality of life across counties.</p>
+      <p>Data in DP was created to democratize access to complex real estate data. We believe that informed decisions are the best decisions — whether you are buying your first home, refinancing a mortgage, or evaluating energy savings across counties.</p>
       <p>All data and analytics across our platforms are sourced from reliable public datasets and official government agencies. Our primary sources include:</p>
       <ul>
-        <li><strong>U.S. Census Bureau (ACS):</strong> demographics, housing values, rent, and owner-occupancy statistics.</li>
-        <li><strong>FHFA (Federal Housing Finance Agency):</strong> House Price Index (HPI) and market momentum data.</li>
-        <li><strong>FRED (Federal Reserve Economic Data):</strong> real-time mortgage rate tracking.</li>
-        <li><strong>HUD (Housing and Urban Development):</strong> official FHA loan limits.</li>
-        <li><strong>FBI Uniform Crime Reporting:</strong> county-level violent and property crime rates.</li>
-        <li><strong>FEMA National Risk Index:</strong> county-level climate and natural hazard risk scores (public domain).</li>
-        <li><strong>CDC PLACES:</strong> county-level health indicators (public domain / ODC-ODbL 1.0; not endorsed by CDC or HHS).</li>
-        <li><strong>OpenStreetMap:</strong> amenity density data (© OpenStreetMap contributors, ODbL 1.0).</li>
+        <li><strong>U.S. Census Bureau (ACS):</strong> demographics, housing values, rent, and income.</li>
+        <li><strong>FHFA:</strong> House Price Index (HPI) and market momentum data.</li>
+        <li><strong>FRED:</strong> real-time mortgage rate tracking.</li>
+        <li><strong>HUD:</strong> official FHA loan limits.</li>
+        <li><strong>FBI Uniform Crime Reporting:</strong> county-level crime rates.</li>
+        <li><strong>FEMA National Risk Index:</strong> climate and natural hazard risk scores.</li>
+        <li><strong>CDC PLACES:</strong> county-level health indicators.</li>
+        <li><strong>U.S. Energy Information Administration (EIA):</strong> state and county electricity rates.</li>
+        <li><strong>NREL (National Renewable Energy Laboratory):</strong> solar radiation data (NSRDB).</li>
+        <li><strong>OpenStreetMap:</strong> amenity density data.</li>
       </ul>
-      <p>We continuously update our pipelines to ensure users are interacting with the most current and reliable data available. Our goal is a seamless, integrated experience — from market analysis to financial calculation in just a few clicks. For a detailed description of every formula and weight, please see our <a href="/methodology.html">Methodology page</a>.</p>
+      <p>We continuously update our pipelines to ensure users are interacting with the most current and reliable data available. For a detailed description of every formula and weight, please see our <a href="/methodology.html">Methodology page</a>.</p>
     </div>
 
     <footer>
@@ -372,19 +369,18 @@
         <a href="/contact.html">Contact Us</a>
       </p>
       <p style="font-size:0.8em; color:#aaa; margin-top:15px;">
-        Amenity data: © OpenStreetMap contributors, licensed under the Open Database License (ODbL 1.0).<br>
-        Health estimates: CDC PLACES. Public domain / ODC-ODbL 1.0. Not endorsed by CDC or HHS.<br>
-        Price index data: This product uses FHFA Data but is neither endorsed nor certified by FHFA.
+        Amenity data: © OpenStreetMap contributors (ODbL 1.0).<br>
+        Health estimates: CDC PLACES (public domain). Not endorsed by CDC or HHS.<br>
+        Price index data: Uses FHFA Data (not endorsed by FHFA).<br>
+        Solar data: NREL NSRDB and EIA (public domain).
       </p>
     </footer>
   </div>
 
   <script>
-    // Current year
     const CURRENT_YEAR = new Date().getFullYear();
     document.querySelectorAll('.currentYear').forEach(el => el.textContent = CURRENT_YEAR);
 
-    // 1. Live data fetch
     async function fetchLiveData() {
       const housingPromise = fetch('https://housing.dataindp.com/data/live_stats.json')
         .then(r => r.ok ? r.json() : null).catch(() => null);
@@ -400,23 +396,18 @@
           document.getElementById('liveHomeValue').textContent = '$' + parseInt(housingData.median_home_value).toLocaleString();
         }
       }
-      // If fetch fails, the static fallback values already in the HTML remain visible.
-
       if (taxData) {
         if (taxData.avg_effective_tax_rate) {
           document.getElementById('liveAvgTaxRate').textContent = taxData.avg_effective_tax_rate.toFixed(2) + '%';
           document.getElementById('taxRate').value = taxData.avg_effective_tax_rate.toFixed(2);
         }
         if (taxData.highest_tax_state && taxData.highest_tax_rate) {
-          document.getElementById('liveHighestTax').textContent =
-            `${taxData.highest_tax_state} (${taxData.highest_tax_rate.toFixed(2)}%)`;
+          document.getElementById('liveHighestTax').textContent = `${taxData.highest_tax_state} (${taxData.highest_tax_rate.toFixed(2)}%)`;
         }
       }
-
       calculateMortgage();
     }
 
-    // 2. Top Livability Counties
     const STATE_ABBR = {
       'alabama':'AL','alaska':'AK','arizona':'AZ','arkansas':'AR','california':'CA',
       'colorado':'CO','connecticut':'CT','delaware':'DE','district-of-columbia':'DC',
@@ -438,8 +429,7 @@
       for (const st of STATE_KEYS_SORTED) {
         if (slug.endsWith('-' + st)) {
           const countyPart = slug.slice(0, -1 - st.length);
-          const countyName = countyPart.split('-')
-            .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+          const countyName = countyPart.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
           return `${countyName}, ${STATE_ABBR[st]}`;
         }
       }
@@ -488,10 +478,7 @@
           if (smallRes.ok) {
             const small = await smallRes.json();
             if (small.top && small.top.length) {
-              const top = small.top.slice(0, 5).map(r => ({
-                slug: r.slug, name: r.name || nameFromSlug(r.slug),
-                composite: r.composite, axes: r.axes || {}
-              }));
+              const top = small.top.slice(0, 5).map(r => ({ slug: r.slug, name: r.name || nameFromSlug(r.slug), composite: r.composite, axes: r.axes || {} }));
               renderTopLivability(top);
               sessionStorage.setItem(cacheKey, JSON.stringify(top));
               sessionStorage.setItem(cachedAt, String(now));
@@ -504,11 +491,7 @@
         if (!res.ok) throw new Error('livability fetch failed');
         const data = await res.json();
         const counties = data.counties || {};
-        const weights = (data.metadata && data.metadata.weights_default) || {
-          affordability: 25, stability: 15, momentum: 15,
-          safety: 15, health: 10, amenities: 20
-        };
-
+        const weights = (data.metadata && data.metadata.weights_default) || { affordability: 25, stability: 15, momentum: 15, safety: 15, health: 10, amenities: 20 };
         const list = [];
         for (const [fips, c] of Object.entries(counties)) {
           const axes = c.axes || {};
@@ -518,12 +501,7 @@
             if (v != null && w > 0) { num += v * w; den += w; }
           }
           if (den === 0) continue;
-          list.push({
-            slug: c.slug || '',
-            name: nameFromSlug(c.slug || ''),
-            composite: num / den,
-            axes
-          });
+          list.push({ slug: c.slug || '', name: nameFromSlug(c.slug || ''), composite: num / den, axes });
         }
         list.sort((a, b) => b.composite - a.composite);
         const top = list.slice(0, 5);
@@ -532,48 +510,43 @@
         sessionStorage.setItem(cachedAt, String(now));
       } catch (e) {
         console.error('Top livability error:', e);
-        const loader = document.getElementById('livabilityLoader');
-        loader.innerHTML = 'Live rankings are temporarily unavailable. The full ranking of all 3,100+ counties is available on the <a href="https://housing.dataindp.com/livability.html">Livability page</a>.';
+        document.getElementById('livabilityLoader').innerHTML = 'Live rankings are temporarily unavailable. The full ranking is available on the <a href="https://housing.dataindp.com/livability.html">Livability page</a>.';
       }
     }
 
-    // 3. Mortgage Calculator (PITI)
     function calculateMortgage() {
-      const price     = parseFloat(document.getElementById('homePrice').value)   || 0;
-      const downPct   = parseFloat(document.getElementById('downPayment').value) || 0;
-      const rate      = parseFloat(document.getElementById('interestRate').value)|| 0;
-      const taxRate   = parseFloat(document.getElementById('taxRate').value)     || 0;
-      const insurance = parseFloat(document.getElementById('insurance').value)   || 0;
+      const price = parseFloat(document.getElementById('homePrice').value) || 0;
+      const downPct = parseFloat(document.getElementById('downPayment').value) || 0;
+      const rate = parseFloat(document.getElementById('interestRate').value) || 0;
+      const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+      const insurance = parseFloat(document.getElementById('insurance').value) || 0;
 
-      const loanAmount  = price * (1 - (downPct / 100));
+      const loanAmount = price * (1 - (downPct / 100));
       const monthlyRate = (rate / 100) / 12;
       const numPayments = 30 * 12;
 
       let pi = 0;
       if (loanAmount > 0 && rate > 0) {
-        pi = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments))
-                       / (Math.pow(1 + monthlyRate, numPayments) - 1);
+        pi = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
       } else if (loanAmount > 0) {
         pi = loanAmount / numPayments;
       }
 
       const monthlyTax = (price * (taxRate / 100)) / 12;
       const monthlyIns = insurance / 12;
-      const total      = pi + monthlyTax + monthlyIns;
+      const total = pi + monthlyTax + monthlyIns;
 
-      document.getElementById('piPayment').textContent   = '$' + Math.round(pi).toLocaleString();
-      document.getElementById('taxPayment').textContent  = '$' + Math.round(monthlyTax).toLocaleString();
-      document.getElementById('insPayment').textContent  = '$' + Math.round(monthlyIns).toLocaleString();
-      document.getElementById('totalPayment').textContent= '$' + Math.round(total).toLocaleString();
+      document.getElementById('piPayment').textContent = '$' + Math.round(pi).toLocaleString();
+      document.getElementById('taxPayment').textContent = '$' + Math.round(monthlyTax).toLocaleString();
+      document.getElementById('insPayment').textContent = '$' + Math.round(monthlyIns).toLocaleString();
+      document.getElementById('totalPayment').textContent = '$' + Math.round(total).toLocaleString();
       document.getElementById('calcResult').style.display = 'block';
     }
 
-    // 4. FAQ accordion
     document.querySelectorAll('.faq-item h4').forEach(item => {
       item.addEventListener('click', () => item.parentElement.classList.toggle('active'));
     });
 
-    // Page load
     window.addEventListener('DOMContentLoaded', () => {
       fetchLiveData();
       fetchTopLivability();
