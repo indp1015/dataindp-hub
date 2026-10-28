@@ -616,7 +616,7 @@
     // 🌟 대시보드 데이터 Fetch 및 렌더링 로직
     async function fetchDashboardData() {
       try {
-        const res = await fetch('https://dataindp.com/data/dashboard_data.json');
+        const res = await fetch('https://housing.dataindp.com/data/dashboard_data.json');
         if (!res.ok) throw new Error('Network response was not ok');
         const json = await res.json();
         
