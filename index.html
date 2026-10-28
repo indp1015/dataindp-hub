@@ -122,6 +122,14 @@
     footer { text-align: center; margin-top: 60px; padding: 30px 20px; border-top: 1px solid #ddd; font-size: 0.9em; color: #888; }
     footer a { color: var(--primary); text-decoration: none; margin: 0 10px; font-weight: bold; }
     footer a:hover { text-decoration: underline; }
+        /* Dashboard Search */
+    .search-container { position: relative; max-width: 450px; margin-bottom: 20px; }
+    #countySearch { width: 100%; padding: 12px; font-size: 1em; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+    #countySearch:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26, 61, 92, 0.2); }
+    .search-results { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px; max-height: 300px; overflow-y: auto; list-style: none; margin: 0; padding: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .search-results li { padding: 10px 15px; cursor: pointer; border-bottom: 1px solid #eee; font-size: 0.95em; }
+    .search-results li:hover, .search-results li.active { background: #f0f8ff; color: var(--primary); }
+    .search-results li:last-child { border-bottom: none; }
   </style>
 </head>
 <body>
@@ -165,10 +173,9 @@
       <h2>🏡 True Cost of Homeownership Dashboard</h2>
       <p>Select a county to see the complete financial picture — home price, property tax, monthly PITI, and more. Data is aggregated from our Housing and Property Tax platforms.</p>
       
-      <div>
-        <select id="countySelect">
-          <option value="">Loading counties...</option>
-        </select>
+      <div class="search-container">
+        <input type="text" id="countySearch" placeholder="Search for a county (e.g., York, Los Angeles)..." autocomplete="off">
+        <ul id="countyResults" class="search-results"></ul>
       </div>
 
       <div class="interactive-grid" style="margin-bottom: 0;">
