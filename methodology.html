@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Methodology - How Data in DP Calculates Livability, Market, and Risk Scores</title>
+  <meta name="description" content="Detailed formulas, weights, data sources, and limitations for the Livability Score, Market Score, effective property tax rate, and insurance risk score used across Data in DP.">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; color: #333; line-height: 1.7; }
+    .container { max-width: 860px; margin: 40px auto; padding: 40px 20px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    h1 { color: #1a3d5c; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+    h2 { color: #1a3d5c; margin-top: 32px; font-size: 1.2em; }
+    h3 { color: #1a3d5c; margin-top: 22px; font-size: 1.05em; }
+    a { color: #1a3d5c; text-decoration: none; font-weight: bold; }
+    a:hover { text-decoration: underline; }
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 0.9em; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.95em; }
+    th, td { border: 1px solid #e5e5e5; padding: 8px 10px; text-align: left; }
+    th { background: #f0f4f8; color: #1a3d5c; }
+    code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+    .note { background:#f0f4f8; border-left:4px solid #1a3d5c; padding:12px 16px; border-radius:4px; font-size:0.95em; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back-link">← Back to Home</a>
+    <h1>Methodology</h1>
+    <p>This page documents how the major scores and metrics on Data in DP are calculated, including formulas, default weights, data sources, and known limitations. It is written so that readers can reproduce and critically evaluate our numbers.</p>
+
+    <h2>1. Livability Score (Six Axes)</h2>
+    <p>The Livability Score is a composite of six axes. Each axis is first normalized into a 0–100 percentile rank across all U.S. counties. The default weights are shown below.</p>
+    <table>
+      <tr><th>Axis</th><th>Default Weight</th><th>Underlying Data</th></tr>
+      <tr><td>Affordability</td><td>25%</td><td>Census ACS — price-to-income ratio</td></tr>
+      <tr><td>Stability</td><td>15%</td><td>FHFA HPI volatility and drawdown history</td></tr>
+      <tr><td>Momentum</td><td>15%</td><td>FHFA HPI recent appreciation</td></tr>
+      <tr><td>Safety</td><td>15%</td><td>FBI UCR — violent and property crime rates</td></tr>
+      <tr><td>Health</td><td>10%</td><td>CDC PLACES — five indicators</td></tr>
+      <tr><td>Amenities</td><td>20%</td><td>OpenStreetMap POI density (six categories)</td></tr>
+    </table>
+    <p>Formula: <code>Livability = Σ(axis_i × weight_i) / Σ(weight_i)</code>, where each axis is a percentile rank from 0 to 100. Users may override the default weights on the Livability page; custom weights are stored only in the visitor's browser (localStorage) and are never transmitted to us.</p>
+
+    <h2>2. Market Score (Four Axes)</h2>
+    <p>The Market Score is designed for investment evaluation and uses four axes with the following default weights.</p>
+    <table>
+      <tr><th>Axis</th><th>Default Weight</th><th>Underlying Data</th></tr>
+      <tr><td>Affordability</td><td>30%</td><td>Price-to-income ratio</td></tr>
+      <tr><td>Stability</td><td>25%</td><td>Historical price volatility</td></tr>
+      <tr><td>Momentum</td><td>25%</td><td>Recent price appreciation</td></tr>
+      <tr><td>Vitality</td><td>20%</td><td>Owner-occupancy and employment</td></tr>
+    </table>
+    <p>Both Livability and Market scores use the same percentile normalization method, but they answer different questions. Livability is about living in a place; Market is about investing in it.</p>
+
+    <h2>3. Effective Property Tax Rate</h2>
+    <p>The effective property tax rate is calculated as <code>annual property tax paid ÷ median home value</code>, expressed as a percentage. We derive it from Census ACS 5-Year Estimates at the county level. This is not the same as the statutory (nominal) tax rate, which is applied to assessed value rather than market value. Differences between assessed and market value, homestead exemptions, and local assessment cycles all contribute to the gap between nominal and effective rates.</p>
+
+    <h2>4. Insurance and Climate Risk Score</h2>
+    <p>The composite insurance risk score combines three inputs, each normalized into a percentile.</p>
+    <ul>
+      <li><strong>FEMA National Risk Index</strong> — hazard exposure and expected annual loss.</li>
+      <li><strong>County insurance premium estimates</strong> — HearthMap (NBER Working Paper 32579, CC BY 4.0).</li>
+      <li><strong>Housing affordability</strong> — premium burden relative to household income.</li>
+    </ul>
+    <p>Scores are percentile ranks across all U.S. counties. Higher scores indicate a higher relative risk burden. The score is not an insurance quote and does not reflect any individual property.</p>
+
+    <h2>5. FHA Loan Limit Formula</h2>
+    <p>FHA loan limits are calculated using the official formula <code>FHA = min(1,209,750, max(541,287, 0.65 × conforming))</code>, where the conforming limit is sourced from FHFA. This formula is applied to avoid missing-value artifacts that appear in some raw datasets.</p>
+
+    <h2>6. Percentile Normalization</h2>
+    <p>For every axis, we rank all counties and convert each rank into a percentile between 0 and 100. A county at the 90th percentile scored higher than 90% of counties on that axis. Percentile ranking is used instead of raw values because it makes different units (dollars, rates, counts, and densities) comparable and it reduces the influence of extreme outliers in small counties. The trade-off is that percentile scores convey relative position, not absolute quality.</p>
+
+    <h2>7. Known Limitations</h2>
+    <ul>
+      <li><strong>County averages mask local variation.</strong> A county score describes the county as a whole; individual neighborhoods, blocks, or properties may differ substantially.</li>
+      <li><strong>Percentile scores are relative.</strong> A score of 90 means "higher than 90% of counties," not "90 out of 100 in absolute quality."</li>
+      <li><strong>Data lags.</strong> ACS 5-Year Estimates and FHFA HPI are published with a lag; scores reflect the most recent available release, not real-time conditions.</li>
+      <li><strong>Small counties are more volatile.</strong> Counties with small populations can show large year-to-year swings due to small sample sizes.</li>
+      <li><strong>Not advice.</strong> Nothing on this site is financial, legal, or real estate advice.</li>
+    </ul>
+
+    <h2>8. Reproducibility</h2>
+    <p>Where possible, we publish the underlying weights and source files used to compute scores so that readers can audit or reproduce results. If you find a discrepancy, please contact us at <a href="mailto:indp1015@gmail.com">indp1015@gmail.com</a>.</p>
+
+    <p style="margin-top:30px;"><a href="/">← Back to Home</a></p>
+  </div>
+</body>
+</html>

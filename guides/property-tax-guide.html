@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Read an Effective Property Tax Rate - Data in DP</title>
+  <meta name="description" content="Learn the difference between nominal and effective property tax rates, why county rates vary, how ACS data is used, and how property tax fits into a monthly PITI payment.">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; color: #333; line-height: 1.8; }
+    .container { max-width: 820px; margin: 40px auto; padding: 40px 20px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    h1 { color: #1a3d5c; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+    h2 { color: #1a3d5c; margin-top: 30px; font-size: 1.2em; }
+    h3 { color: #1a3d5c; margin-top: 22px; font-size: 1.05em; }
+    a { color: #1a3d5c; text-decoration: none; font-weight: bold; }
+    a:hover { text-decoration: underline; }
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 0.9em; }
+    .lead { font-size: 1.08em; color: #444; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 8px; }
+    .note { background:#f0f4f8; border-left:4px solid #1a3d5c; padding:12px 16px; border-radius:4px; font-size:0.95em; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.95em; }
+    th, td { border: 1px solid #e5e5e5; padding: 8px 10px; text-align: left; }
+    th { background: #f0f4f8; color: #1a3d5c; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/guides/" class="back-link">← Back to Guides</a>
+    <h1>How to Read an Effective Property Tax Rate</h1>
+    <p class="lead">Property tax is one of the largest recurring costs of homeownership, and also one of the most misunderstood. Most buyers compare the "tax rate" they see on a listing, but that number is often a nominal rate applied to an assessed value — not to the price they will actually pay. This guide explains how to read an effective property tax rate and how to use it correctly.</p>
+
+    <h2>1. Nominal Rate vs. Effective Rate</h2>
+    <p>The <strong>nominal tax rate</strong> is the rate a local government levies on assessed value. The <strong>effective tax rate</strong> is the annual tax paid divided by the market value of the property, expressed as a percentage. Because assessed values are frequently lower than market values — and because homestead exemptions, assessment caps, and local assessment cycles vary widely — the effective rate is usually different from the nominal rate.</p>
+    <p>When you compare two counties, the effective rate is the more useful figure. It tells you how much you will actually pay per dollar of home value, regardless of how the county structures its assessments.</p>
+
+    <h2>2. How Effective Rates Are Calculated on This Site</h2>
+    <p>Data in DP calculates the county-level effective property tax rate from Census American Community Survey 5-Year Estimates using the formula <code>annual property tax paid ÷ median home value × 100</code>. This produces a single percentage for the county that reflects the typical relationship between taxes paid and home value in that area.</p>
+    <p>This approach has important advantages. It uses a consistent, publicly documented source. It avoids the confusion of comparing nominal rates across jurisdictions that assess properties differently. And it produces a figure that can be plugged directly into a PITI calculator.</p>
+
+    <h2>3. Why Counties Differ So Much</h2>
+    <p>Effective property tax rates vary dramatically across the United States — from well below 0.5 percent in some states to over 2 percent in others. There are several structural reasons.</p>
+    <ul>
+      <li><strong>State reliance on property tax.</strong> Some states fund local services primarily through property taxes; others rely more on sales or income taxes.</li>
+      <li><strong>School funding structures.</strong> In many counties, the largest share of property tax goes to local school districts.</li>
+      <li><strong>Assessment practices.</strong> A county that reassesses frequently will have assessed values closer to market values; a county with long reassessment cycles may not.</li>
+      <li><strong>Exemptions and caps.</strong> Homestead exemptions, senior exemptions, and assessment caps all reduce the effective rate for qualifying homeowners.</li>
+    </ul>
+
+    <h2>4. Limitations of ACS-Derived Tax Rates</h2>
+    <p>ACS estimates are survey-based and aggregated. They are excellent for broad comparisons but have known limitations.</p>
+    <ul>
+      <li><strong>They describe the median, not the individual.</strong> Your actual tax bill will depend on your property's assessed value, exemptions, and the local tax rate in your specific district.</li>
+      <li><strong>They lag.</strong> ACS 5-Year Estimates reflect a range of survey years and are not updated in real time.</li>
+      <li><strong>They mask intra-county variation.</strong> School districts, municipal overlays, and special assessment districts can create large differences within a single county.</li>
+    </ul>
+
+    <h2>5. Property Tax in a Monthly Payment</h2>
+    <p>Property tax is the "T" in PITI — principal, interest, taxes, and insurance. Our calculator on the <a href="/">home page</a> allows you to plug in an effective tax rate and see the resulting monthly tax figure alongside principal, interest, and insurance. Two homes with the same price and mortgage rate can have very different monthly payments when you account for effective property tax.</p>
+    <p>For example, a $400,000 home in a county with a 0.5 percent effective rate carries roughly $167 per month in property tax. The same home in a county with a 2.2 percent effective rate carries roughly $733 per month. That $566 difference is often larger than the difference between a 6.5 percent and a 7.5 percent mortgage rate on a comparable loan.</p>
+
+    <h2>6. Property Tax as a Long-Term Cost</h2>
+    <p>Over a 30-year ownership period, property tax is not a small line item. Even at an effective rate of 1 percent, a homeowner pays an amount equal to 30 percent of the original home value over three decades — and that does not account for reassessment-driven increases. Buyers comparing two otherwise similar homes in different counties should model the full PITI with the correct local effective tax rate rather than relying on the national average.</p>
+
+    <h2>7. Practical Steps for Buyers</h2>
+    <ol>
+      <li>Look up the effective rate for the county you are considering on our <a href="https://propertytax.dataindp.com">Property Tax site</a>.</li>
+      <li>Check whether the county offers homestead or other exemptions that would reduce your bill.</li>
+      <li>Confirm with the local assessor's office whether the assessed value of the specific property is close to its market value.</li>
+      <li>Enter the effective rate into our PITI calculator to see the monthly cost.</li>
+      <li>Compare the total monthly cost, not just the list price, when evaluating two properties.</li>
+    </ol>
+
+    <div class="note">
+      <strong>Not advice:</strong> This guide is for educational purposes only. Tax rules vary by state, county, and municipality, and individual circumstances can change the result significantly. Consult a local tax professional for guidance on a specific property.
+    </div>
+
+    <p style="margin-top:30px;"><a href="/guides/">← Back to Guides</a></p>
+  </div>
+</body>
+</html>

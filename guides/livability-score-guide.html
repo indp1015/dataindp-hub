@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Livability Score Explained: The Six Axes and How to Read Them</title>
+  <meta name="description" content="A complete guide to the Data in DP Livability Score: what the six axes measure, how percentile ranking works, how to adjust weights, and the limitations readers should know.">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; color: #333; line-height: 1.8; }
+    .container { max-width: 820px; margin: 40px auto; padding: 40px 20px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    h1 { color: #1a3d5c; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+    h2 { color: #1a3d5c; margin-top: 30px; font-size: 1.2em; }
+    h3 { color: #1a3d5c; margin-top: 22px; font-size: 1.05em; }
+    a { color: #1a3d5c; text-decoration: none; font-weight: bold; }
+    a:hover { text-decoration: underline; }
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 0.9em; }
+    .lead { font-size: 1.08em; color: #444; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 8px; }
+    .note { background:#f0f4f8; border-left:4px solid #1a3d5c; padding:12px 16px; border-radius:4px; font-size:0.95em; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.95em; }
+    th, td { border: 1px solid #e5e5e5; padding: 8px 10px; text-align: left; }
+    th { background: #f0f4f8; color: #1a3d5c; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/guides/" class="back-link">← Back to Guides</a>
+    <h1>The Livability Score Explained: Six Axes and How to Read Them</h1>
+    <p class="lead">The Livability Score is not a single number that tells you where to live. It is a comparison tool built from six distinct axes, and it becomes useful only when you understand what each axis measures and what it leaves out.</p>
+
+    <h2>1. What the Livability Score Is</h2>
+    <p>The Data in DP Livability Score compares roughly 3,100 U.S. counties from a residence and lifestyle perspective. Every score is expressed as a percentile rank between 0 and 100. A value near 100 means the county sits near the top of the national distribution on that axis; a value near 0 means it sits near the bottom.</p>
+    <p>The critical point is that the score is <strong>relative, not absolute</strong>. A county with a score of 90 placed higher than 90 percent of counties — it does not represent "90 out of 100" in some universal measure of quality of life. Two counties can both score 70 on affordability while being located in completely different housing markets with different income distributions.</p>
+
+    <h2>2. The Six Axes</h2>
+    <p>Each axis is computed independently from a separate public dataset. Because they use different units and different source data, they are normalized before they are combined.</p>
+
+    <h3>2.1 Affordability (default weight 25%)</h3>
+    <p>Affordability uses the ratio of median home value to median household income, drawn from the Census American Community Survey. A high ratio indicates that homes are expensive relative to local incomes; a low ratio indicates that homes are more within reach of local earners. This axis deliberately measures burden rather than price. A county with $600,000 homes and $200,000 median incomes is more affordable by this measure than a county with $300,000 homes and $60,000 median incomes.</p>
+
+    <h3>2.2 Stability (default weight 15%)</h3>
+    <p>Stability draws on the FHFA House Price Index. It captures how much prices have fluctuated historically and how deep past declines were. Counties that experienced large booms and sharp busts score lower on stability than counties with smoother price paths. For a household planning to stay in a home for a decade or more, stability is a proxy for how much price risk they are exposed to during that period.</p>
+
+    <h3>2.3 Momentum (default weight 15%)</h3>
+    <p>Momentum reflects recent years of price appreciation. A high momentum score means prices have been rising quickly. That can be attractive to buyers who expect continued growth, but it can also mean the market has already priced in much of that growth. Momentum should be read as a description of recent market direction, not as a prediction.</p>
+
+    <h3>2.4 Safety (default weight 15%)</h3>
+    <p>Safety uses violent and property crime rates from the FBI Uniform Crime Reporting program. Because reporting practices vary between agencies, we apply calibrated corrections for New York City boroughs and Washington, D.C., where reporting structures differ from typical county agencies. This axis describes county-wide averages and does not capture variation between neighborhoods within a county.</p>
+
+    <h3>2.5 Health (default weight 10%)</h3>
+    <p>Health uses five indicators from CDC PLACES: obesity, diabetes, physical inactivity, high blood pressure, and mental health. These are population-level estimates, not individual health data. A high health score suggests that the county's population has relatively favorable health outcomes on these measures. It does not directly measure access to healthcare, hospital quality, or environmental health.</p>
+
+    <h3>2.6 Amenities (default weight 20%)</h3>
+    <p>Amenities measures point-of-interest density from OpenStreetMap across six categories: education, healthcare, sustenance (restaurants, cafes), finance (banks, ATMs), entertainment, and grocery stores. Dense urban counties naturally score higher here. Readers who prefer quiet suburban or rural settings should treat a low amenities score as a trade-off rather than a defect.</p>
+
+    <h2>3. Default Weights and How to Change Them</h2>
+    <table>
+      <tr><th>Axis</th><th>Default Weight</th></tr>
+      <tr><td>Affordability</td><td>25%</td></tr>
+      <tr><td>Stability</td><td>15%</td></tr>
+      <tr><td>Momentum</td><td>15%</td></tr>
+      <tr><td>Safety</td><td>15%</td></tr>
+      <tr><td>Health</td><td>10%</td></tr>
+      <tr><td>Amenities</td><td>20%</td></tr>
+    </table>
+    <p>The composite is calculated as a weighted average of the axis percentiles: <code>Livability = Σ(axis × weight) / Σ(weight)</code>. The default weights reflect a balanced profile. If affordability matters more to you than amenities, or if safety outweighs momentum in your decision, you can change the weights on the <a href="https://housing.dataindp.com/livability.html">Livability page</a>. Custom weights are stored only in your browser and are not sent to us.</p>
+
+    <h2>4. How to Read a Percentile Score in Practice</h2>
+    <p>Percentiles are easiest to interpret when you compare two counties directly. If County A has an affordability percentile of 80 and County B has 40, County A is more affordable relative to its own income distribution than County B is relative to its own. That comparison is meaningful even if their median home prices in dollars are identical, because the score accounts for local incomes.</p>
+    <p>Percentiles are harder to interpret in isolation. A county at the 55th percentile on health is only slightly above the median — it is not "55 percent healthy." When you look at a single number, keep the comparison frame in mind.</p>
+
+    <h2>5. What the Score Does Not Tell You</h2>
+    <ul>
+      <li><strong>Neighborhood-level variation.</strong> A county average can hide very different conditions in different ZIP codes.</li>
+      <li><strong>Future trends.</strong> Percentiles describe the recent past and the present, not the future.</li>
+      <li><strong>Personal priorities.</strong> The default weights are one reasonable starting point, not a universal answer.</li>
+      <li><strong>Absolute quality.</strong> A county at the 95th percentile is not "95 percent perfect" — it simply ranks higher than 95 percent of other counties on that measure.</li>
+    </ul>
+
+    <h2>6. Putting the Score to Work</h2>
+    <p>The most useful way to use the Livability Score is to treat it as a first filter rather than a final answer. Start by setting weights that reflect your own priorities, sort counties by the resulting composite, and then open the county detail pages for the top candidates. Examine the individual axes rather than the composite alone. A county that ranks high overall because of amenities but low on affordability may not fit your situation.</p>
+    <p>If you want to understand the exact formulas, sources, and limitations in more detail, see our <a href="/methodology.html">Methodology page</a>. If you find a data issue, please report it through our <a href="/contact.html">Contact page</a>.</p>
+
+    <p style="margin-top:30px;"><a href="/guides/">← Back to Guides</a></p>
+  </div>
+</body>
+</html>

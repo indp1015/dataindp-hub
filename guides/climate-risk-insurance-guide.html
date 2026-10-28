@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Climate Risk and Insurance Premiums: Using FEMA Data - Data in DP</title>
+  <meta name="description" content="How to read FEMA National Risk Index data, county insurance premium estimates, and the six perils that standard HO-3 policies often exclude, all explained with the Data in DP composite risk score.">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; color: #333; line-height: 1.8; }
+    .container { max-width: 820px; margin: 40px auto; padding: 40px 20px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    h1 { color: #1a3d5c; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+    h2 { color: #1a3d5c; margin-top: 30px; font-size: 1.2em; }
+    h3 { color: #1a3d5c; margin-top: 22px; font-size: 1.05em; }
+    a { color: #1a3d5c; text-decoration: none; font-weight: bold; }
+    a:hover { text-decoration: underline; }
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 0.9em; }
+    .lead { font-size: 1.08em; color: #444; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 8px; }
+    .note { background:#f0f4f8; border-left:4px solid #1a3d5c; padding:12px 16px; border-radius:4px; font-size:0.95em; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.95em; }
+    th, td { border: 1px solid #e5e5e5; padding: 8px 10px; text-align: left; }
+    th { background: #f0f4f8; color: #1a3d5c; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/guides/" class="back-link">← Back to Guides</a>
+    <h1>Climate Risk and Insurance Premiums: Using FEMA Data</h1>
+    <p class="lead">Climate risk is increasingly a financial factor in homeownership. Two homes with the same price, in the same state, can carry very different insurance costs depending on the hazard profile of their county. This guide explains how the Data in DP insurance risk score is built and how to read it.</p>
+
+    <h2>1. Why Climate Risk Belongs in a Housing Decision</h2>
+    <p>Climate risk affects housing in three ways. First, it affects insurance premiums: counties with higher expected annual losses from natural hazards tend to have higher premiums. Second, it affects insurability: in some areas, certain perils — particularly flood and wildfire — are increasingly excluded from standard policies or require separate coverage. Third, it affects long-term property value: markets are gradually pricing hazard exposure into home prices, and that trend is likely to continue.</p>
+    <p>For most households, the practical question is not whether a county is "safe" in absolute terms. The practical question is how much of the total cost of ownership is attributable to hazard exposure and insurance, and whether that exposure is acceptable over the expected holding period.</p>
+
+    <h2>2. The FEMA National Risk Index</h2>
+    <p>The FEMA National Risk Index (NRI) is a public dataset that estimates risk for every county in the United States. It combines three components: expected annual loss from natural hazards, social vulnerability, and community resilience. The NRI produces a composite risk score as well as hazard-specific scores for events such as flooding, wildfire, hurricane, tornado, earthquake, and landslide.</p>
+    <p>In the Data in DP insurance score, we use NRI hazard exposure and expected annual loss as one of the three inputs. The NRI is a strong starting point because it is nationally consistent and publicly documented. It is not a substitute for a property-level flood determination or a site-specific wildfire assessment.</p>
+
+    <h2>3. County Insurance Premium Estimates</h2>
+    <p>Premiums vary widely across the United States. We use county-level premium estimates derived from the HearthMap dataset (NBER Working Paper 32579, licensed CC BY 4.0) as the second input. These estimates reflect typical premiums paid in each county for standard homeowners coverage, though they do not break out peril-specific costs.</p>
+    <p>Premiums respond to hazard exposure but also to local market conditions: the number of insurers operating in a county, the cost of rebuilding, and the regulatory environment all influence pricing. Two counties with similar hazard profiles can have different premiums for these reasons.</p>
+
+    <h2>4. Housing Affordability as a Third Input</h2>
+    <p>The third input is the burden of insurance relative to local household income. A $4,000 annual premium is a different burden in a county with $50,000 median household income than in a county with $120,000. Combining premium data with ACS income estimates gives us a measure of how much insurance stress a typical household faces in each county.</p>
+
+    <h2>5. How the Composite Score Is Built</h2>
+    <p>Each of the three inputs is converted to a percentile rank across all counties, then combined into a composite. Higher scores indicate a higher relative insurance and climate risk burden. The score is not an insurance quote, not a forecast of future premiums, and not a prediction of future losses for any individual property.</p>
+    <table>
+      <tr><th>Input</th><th>Source</th><th>What It Captures</th></tr>
+      <tr><td>Hazard exposure and expected annual loss</td><td>FEMA National Risk Index</td><td>Probability-weighted losses from natural hazards</td></tr>
+      <tr><td>Typical premiums</td><td>HearthMap (NBER WP 32579)</td><td>Cost of standard coverage in the county</td></tr>
+      <tr><td>Affordability of premiums</td><td>Census ACS</td><td>Premium burden relative to local income</td></tr>
+    </table>
+
+    <h2>6. The Six Perils Standard Policies Often Miss</h2>
+    <p>A standard HO-3 homeowners policy typically covers fire, windstorm, hail, and certain other perils, but it commonly excludes or limits several major hazards. Buyers should know which ones matter most in the county they are considering.</p>
+
+    <h3>6.1 Flood</h3>
+    <p>Flood is excluded from most standard policies and requires separate coverage, often through the National Flood Insurance Program or a private flood insurer. Flood risk is not limited to designated floodplains; in many counties, a meaningful share of flood claims come from outside the highest-risk zones.</p>
+
+    <h3>6.2 Earthquake</h3>
+    <p>Earthquake coverage is generally excluded and requires a separate endorsement or policy. It is most relevant in the western United States, but significant seismic zones exist in other regions as well.</p>
+
+    <h3>6.3 Wildfire</h3>
+    <p>Wildfire coverage is often included in standard policies, but insurers in high-risk areas increasingly impose coverage limits or non-renew properties. In some counties, wildfire risk has become a primary driver of premium increases.</p>
+
+    <h3>6.4 Hurricane</h3>
+    <p>Hurricane coverage is often subject to a separate, higher deductible than other perils. In coastal counties, the hurricane deductible can be several percentage points of the dwelling value, which can mean tens of thousands of dollars out of pocket before coverage begins.</p>
+
+    <h3>6.5 Tornado</h3>
+    <p>Tornado coverage is usually included under windstorm, but deductibles and coverage caps can vary. Tornado risk is concentrated in the central United States but exists in many other regions.</p>
+
+    <h3>6.6 Landslide</h3>
+    <p>Landslide is typically excluded and requires separate coverage where it is available at all. It is most relevant in steep terrain and areas with certain soil and rainfall conditions.</p>
+
+    <h2>7. How to Use the Score</h2>
+    <ol>
+      <li>Look up the county on our <a href="https://insurance.dataindp.com">Insurance &amp; Climate Risk site</a>.</li>
+      <li>Read the composite score alongside the individual hazard indicators rather than in isolation.</li>
+      <li>Check which perils are most relevant in that county, and whether standard coverage would actually respond to them.</li>
+      <li>Model the full PITI with a realistic premium, not a national average.</li>
+      <li>For high-risk counties, obtain a property-level flood determination and, where relevant, a wildfire or seismic assessment before making an offer.</li>
+    </ol>
+
+    <div class="note">
+      <strong>Not advice:</strong> This guide is for educational purposes. Insurance availability, pricing, and coverage terms vary by insurer, property, and state. Consult a licensed insurance professional for guidance on a specific property.
+    </div>
+
+    <p style="margin-top:30px;"><a href="/guides/">← Back to Guides</a></p>
+  </div>
+</body>
+</html>
