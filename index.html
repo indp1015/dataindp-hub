@@ -197,6 +197,16 @@
             <span class="snapshot-label">FEMA Climate Risk Score</span>
             <span class="snapshot-value" id="dash-fema-risk">-</span>
           </div>
+                    <!-- 🌟 태양광 데이터 추가 -->
+          <div class="snapshot-item">
+            <span class="snapshot-label">Solar Payback (6kW)</span>
+            <span class="snapshot-value" id="dash-solar-payback">-</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">25-Yr Solar ROI</span>
+            <span class="snapshot-value" id="dash-solar-roi">-</span>
+          </div>
+          <!-- 🌟 여기까지 -->
           <div class="snapshot-item">
             <span class="snapshot-label">Market Score</span>
             <span class="snapshot-value" id="dash-market-score">-</span>
@@ -634,32 +644,33 @@
 
     async function fetchDashboardData() {
       try {
-        // 🌟 2개의 서로 다른 서브도메인에서 데이터를 병렬로 Fetch (독립적)
-        const [housingRes, insRes] = await Promise.all([
+        // 🌟 3개의 독립된 서브도메인에서 병렬로 데이터 요청
+        const [housingRes, insRes, solarRes] = await Promise.all([
           fetch('https://housing.dataindp.com/data/dashboard_data.json'),
-          fetch('https://insurance.dataindp.com/data/dashboard_insurance.json')
+          fetch('https://insurance.dataindp.com/data/dashboard_insurance.json'),
+          fetch('https://solar.dataindp.com/data/dashboard_solar.json')
         ]);
 
         if (!housingRes.ok) throw new Error('Housing data load failed');
         
         const housingJson = await housingRes.json();
-        // 보험 데이터는 실패하더라도 하우징 데이터는 보여주도록 예외 처리
         const insJson = insRes.ok ? await insRes.json() : { counties: {} }; 
+        const solarJson = solarRes.ok ? await solarRes.json() : { counties: {} }; 
 
         dashboardData = housingJson.counties || {};
         globalMortgageRate = housingJson.metadata.mortgage_rate_30yr || globalMortgageRate;
 
-        // 🆕 보험 데이터를 FIPS 코드 기준으로 매핑
+        // 🆕 보험 및 태양광 데이터를 FIPS 기준으로 매핑
         const insByFips = {};
-        if (insJson.counties) {
-          Object.values(insJson.counties).forEach(item => {
-            insByFips[item.fips] = item;
-          });
-        }
+        if (insJson.counties) Object.values(insJson.counties).forEach(item => insByFips[item.fips] = item);
 
-        // 하우징 데이터에 보험 데이터 병합
+        const solarByFips = {};
+        if (solarJson.counties) Object.values(solarJson.counties).forEach(item => solarByFips[item.fips] = item);
+
+        // 하우징 데이터에 모든 데이터 병합
         Object.keys(dashboardData).forEach(slug => {
           const fips = dashboardData[slug].fips;
+          
           if (insByFips[fips]) {
             dashboardData[slug].insurance_annual = insByFips[fips].premium;
             dashboardData[slug].fema_risk = insByFips[fips].fema_risk;
@@ -667,9 +678,19 @@
             dashboardData[slug].insurance_annual = null;
             dashboardData[slug].fema_risk = null;
           }
+
+          if (solarByFips[fips]) {
+            dashboardData[slug].solar_payback = solarByFips[fips].payback_years;
+            dashboardData[slug].solar_roi = solarByFips[fips].roi_25y_pct;
+            dashboardData[slug].solar_savings = solarByFips[fips].annual_savings;
+          } else {
+            dashboardData[slug].solar_payback = null;
+            dashboardData[slug].solar_roi = null;
+            dashboardData[slug].solar_savings = null;
+          }
         });
 
-        // --- 이하 UI 렌더링 로직 ---
+        // --- 이하 UI 렌더링 로직 (검색창 등) ---
         const searchInput = document.getElementById('countySearch');
         const resultsList = document.getElementById('countyResults');
         
@@ -702,9 +723,7 @@
         searchInput.addEventListener('input', (e) => renderOptions(e.target.value));
         
         document.addEventListener('click', (e) => {
-          if (!e.target.closest('.search-container')) {
-            resultsList.style.display = 'none';
-          }
+          if (!e.target.closest('.search-container')) resultsList.style.display = 'none';
         });
 
         resultsList.addEventListener('click', (e) => {
@@ -739,10 +758,14 @@
         livabilityEl.innerHTML = '<span style="font-size: 0.85em; color: #888; font-weight: normal;">Default weights</span>';
       }
 
-      // 보험 데이터 업데이트
+      // 보험 데이터
       const annualIns = data.insurance_annual || 0;
       document.getElementById('dash-insurance-annual').textContent = annualIns > 0 ? '$' + annualIns.toLocaleString() : 'N/A';
       document.getElementById('dash-fema-risk').textContent = data.fema_risk ? data.fema_risk.toFixed(1) + ' / 100' : 'N/A';
+
+      // 🌟 태양광 데이터 업데이트
+      document.getElementById('dash-solar-payback').textContent = data.solar_payback ? data.solar_payback.toFixed(1) + ' Years' : 'N/A';
+      document.getElementById('dash-solar-roi').textContent = data.solar_roi ? data.solar_roi.toFixed(0) + '%' : 'N/A';
 
       // 2. PITI 계산
       const price = data.home_price;
@@ -760,8 +783,8 @@
       }
 
       const monthlyTax = (price * (taxRate / 100)) / 12;
-      const monthlyIns = annualIns / 12; // 🌟 월 보험료 계산
-      const totalPITI = pi + monthlyTax + monthlyIns; // 🌟 총합에 보험료 포함!
+      const monthlyIns = annualIns / 12; 
+      const totalPITI = pi + monthlyTax + monthlyIns; 
 
       document.getElementById('dash-pi').textContent = '$' + Math.round(pi).toLocaleString();
       document.getElementById('dash-monthly-tax').textContent = '$' + Math.round(monthlyTax).toLocaleString();
@@ -778,9 +801,13 @@
         analysis += `The effective property tax rate is a manageable ${taxRate.toFixed(2)}%, costing roughly $${Math.round(monthlyTax).toLocaleString()} per month. `;
       }
 
-      // 🌟 보험료 분석 문구 추가
       if (annualIns > 0) {
         analysis += `Homeowners insurance is estimated at $${annualIns.toLocaleString()} annually (about $${Math.round(monthlyIns).toLocaleString()}/month) based on FEMA climate risk data. `;
+      }
+
+      // 🌟 태양광 분석 멘트 추가
+      if (data.solar_payback) {
+        analysis += `A 6kW solar installation would pay for itself in approximately ${data.solar_payback.toFixed(1)} years, yielding a 25-year ROI of ${data.solar_roi.toFixed(0)}% and saving about $${data.solar_savings.toLocaleString()} annually on energy bills. `;
       }
 
       if (data.market_score > 60) {
