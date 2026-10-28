@@ -54,15 +54,17 @@ async function fetchTopLivability() {
 // 🌟 2. 모기지 금리 차트 렌더링
 async function renderMortgageChart() {
   try {
-    const res = await fetch('https://housing.dataindp.com/data/fred_mortgage_rates.json');
+    // 🆕 새로 생성된 차트용 JSON 파일 호출
+    const res = await fetch('https://housing.dataindp.com/data/mortgage_trends.json');
     if (!res.ok) throw new Error('Chart data not found');
     const data = await res.json();
-    const observations = data.series?.MORTGAGE30US?.observations || [];
     
-    // 최근 60개월 데이터만 추출
-    const recentData = observations.slice(-60);
-    const labels = recentData.map(d => d.date);
-    const values = recentData.map(d => d.value);
+    // 데이터 구조에 맞게 추출 (trends 배열 안에 date, value)
+    const observations = data.trends || [];
+    if (observations.length === 0) throw new Error('No observation data');
+
+    const labels = observations.map(d => d.date);
+    const values = observations.map(d => d.value);
 
     const ctx = document.getElementById('mortgageChart');
     if(!ctx) return;
@@ -85,11 +87,36 @@ async function renderMortgageChart() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { x: { display: false }, y: { display: true, ticks: { callback: function(value) { return value + '%'; } } } }
+        plugins: { 
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return context.parsed.y.toFixed(2) + '%';
+              }
+            }
+          }
+        },
+        scales: { 
+          x: { display: false }, 
+          y: { 
+            display: true, 
+            ticks: { 
+              callback: function(value) { return value + '%'; },
+              maxTicksLimit: 5
+            } 
+          } 
+        }
       }
     });
-  } catch (e) { console.error('Chart error', e); }
+  } catch (e) { 
+    console.error('Chart error', e); 
+    // 🆕 데이터가 없을 경우 차트 영역에 안내 문구 표시
+    const chartContainer = document.getElementById('mortgageChart').parentElement;
+    if (chartContainer) {
+      chartContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#888;font-size:0.9em;">Chart data currently unavailable.</div>';
+    }
+  }
 }
 
 // 🌟 3. 대시보드 데이터 Fetch 및 병합
