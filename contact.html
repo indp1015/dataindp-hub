@@ -4,40 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us - Data in DP</title>
-  <meta name="description" content="Contact Data in DP for questions, data corrections, or partnership inquiries about our housing, mortgage, property tax, and insurance risk tools.">
+  <meta name="description" content="Contact the Data in DP team for questions, data corrections, or partnership inquiries.">
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; color: #333; line-height: 1.7; }
-    .container { max-width: 800px; margin: 40px auto; padding: 40px 20px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+    .container { max-width: 820px; margin: 40px auto; padding: 40px 20px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
     h1 { color: #1a3d5c; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-    h2 { color: #1a3d5c; margin-top: 30px; font-size: 1.15em; text-align: left; }
-    .email-box { margin: 30px 0; padding: 20px; background: #f0f4f8; border-radius: 8px; font-size: 1.2em; }
     a { color: #1a3d5c; text-decoration: none; font-weight: bold; }
     a:hover { text-decoration: underline; }
-    .back-link { display: block; margin-bottom: 20px; font-size: 0.9em; text-align: left; }
-    ul { text-align: left; padding-left: 20px; }
-    li { margin-bottom: 8px; }
-    .response-note { font-size: 0.9em; color: #666; margin-top: 20px; }
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 0.9em; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; color: #1a3d5c; }
+    input[type="text"], input[type="email"], textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit; box-sizing: border-box; }
+    textarea { height: 150px; resize: vertical; }
+    button { background: #1a3d5c; color: white; border: none; padding: 12px 20px; border-radius: 5px; font-size: 1em; cursor: pointer; font-weight: bold; }
+    button:hover { background: #122c42; }
   </style>
 </head>
 <body>
   <div class="container">
     <a href="/" class="back-link">← Back to Home</a>
     <h1>Contact Us</h1>
-    <p>If you have questions, feedback, or business inquiries regarding Data in DP or any of our sub-sites (Housing, Mortgage, Property Tax, Insurance), please reach out. We read every message.</p>
+    <p>We welcome your feedback, questions, and data corrections. Whether you spotted an error in our formulas or want to suggest a new feature, please reach out using the form below or email us directly at <strong>indp1015@gmail.com</strong>.</p>
 
-    <div class="email-box">
-      📧 Email: <a href="mailto:indp1015@gmail.com">indp1015@gmail.com</a>
-    </div>
+    <form action="https://formsubmit.co/indp1015@gmail.com" method="POST">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_subject" value="New Inquiry from Data in DP">
+      
+      <div class="form-group">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" required placeholder="John Doe">
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Your Email Address</label>
+        <input type="email" id="email" name="email" required placeholder="john@example.com">
+      </div>
+      
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" name="subject" required placeholder="Data correction, partnership, feedback...">
+      </div>
+      
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required placeholder="Please describe your inquiry in detail..."></textarea>
+      </div>
+      
+      <button type="submit">Send Message</button>
+    </form>
 
-    <h2>What to Contact Us About</h2>
-    <ul>
-      <li><strong>Data corrections:</strong> If you believe a score, tax rate, or premium estimate is wrong, please include the county and the value you expected. We investigate every report.</li>
-      <li><strong>Methodology questions:</strong> If something on our <a href="/methodology.html">Methodology page</a> is unclear, tell us which part and we will improve the explanation.</li>
-      <li><strong>Accessibility issues:</strong> If any part of the site is difficult to use with assistive technology, we want to know.</li>
-      <li><strong>Partnership and licensing:</strong> For data licensing or media inquiries, email us with a short description of your use case.</li>
-    </ul>
-
-    <p class="response-note">We aim to respond within a few business days. We are not able to provide personalized financial, legal, or real estate advice, and we cannot evaluate individual properties.</p>
+    <p style="margin-top:30px;"><a href="/">← Back to Home</a></p>
   </div>
 </body>
 </html>
