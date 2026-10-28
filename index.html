@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>U.S. Housing, Livability, Mortgage &amp; Solar ROI Data Hub</title>
-  <meta name="description" content="Explore county-level home prices, livability scores, mortgage calculators, property taxes, insurance risk data, and solar ROI across 3,100+ U.S. counties. Built from U.S. Census, FEMA, EIA, NREL, and OpenStreetMap data.">
+  <meta name="description" content="Explore county-level home prices, livability scores, mortgage calculators, property taxes, insurance risk data, and solar ROI across 3,100+ U.S. counties.">
 
   <meta property="og:title" content="U.S. Housing, Livability, Mortgage &amp; Solar ROI Data Hub">
   <meta property="og:description" content="County-level home prices, livability scores, mortgage tools, property tax, climate risk, and solar ROI data — all in one hub.">
@@ -21,17 +21,8 @@
     gtag('config', 'G-RPS0MR3SX5');
   </script>
 
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Data in DP",
-    "url": "https://dataindp.com",
-    "description": "U.S. housing market, county livability, mortgage, property tax, insurance, and solar ROI data hub.",
-    "inLanguage": "en-US"
-  }
-  </script>
+  <!-- Chart.js 추가 (모기지 금리 차트용) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- 외부 CSS 로드 -->
   <link rel="stylesheet" href="css/style.css">
@@ -40,102 +31,183 @@
   <div class="container">
     <header>
       <h1>U.S. Housing, Livability, Mortgage &amp; Solar ROI Data Hub</h1>
-      <p class="subtitle">Explore county-level <strong>home prices</strong>, <strong>livability scores</strong>, <strong>mortgage calculators</strong>, <strong>property taxes</strong>, <strong>insurance risk data</strong>, and <strong>solar ROI</strong> across 3,100+ U.S. counties — all sourced from public data. Read our <a href="/methodology.html">methodology</a> and <a href="/about.html">about</a> pages to understand how every score is built.</p>
+      <p class="subtitle">Explore county-level <strong>home prices</strong>, <strong>livability scores</strong>, <strong>mortgage calculators</strong>, <strong>property taxes</strong>, <strong>insurance risk data</strong>, and <strong>solar ROI</strong> across 3,100+ U.S. counties.</p>
     </header>
 
-    <!-- 🆕 애드센스 심사 봇을 위한 정적 텍스트 (Hero Section) -->
+    <!-- Hero Section (애드센스 봇용 정적 텍스트) -->
     <div style="background: #fff; padding: 20px 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border-left: 5px solid var(--primary);">
       <p style="font-size: 1.1em; color: #333; margin: 0; line-height: 1.7;">
         <strong>Welcome to the ultimate data hub for U.S. homebuyers.</strong> Whether you are calculating your monthly <em>PITI (Principal, Interest, Taxes, and Insurance)</em>, exploring local climate risks, or estimating the ROI of a solar installation, our interactive tools provide accurate, county-level insights. Start by searching for your county below to see the true, long-term cost of homeownership.
       </p>
     </div>
 
-    <!-- 🌟 1. 통합 대시보드 섹션 (최상단으로 이동) -->
+    <!-- 🌟 통합 대시보드 섹션 (최상단) -->
     <div class="content-section" id="trueCostDashboard">
-      <h2>🏡 True Cost of Homeownership Dashboard</h2>
-      <p>Select a county to see the complete financial picture — home price, property tax, monthly PITI, and more. Data is aggregated from our Housing, Property Tax, Insurance, and Solar platforms.</p>
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;">
+        <h2 style="margin: 0; border: none; padding: 0;">🏡 True Cost of Homeownership Dashboard</h2>
+        <span id="last-updated" style="font-size: 0.8em; color: #888; background: #f0f4f8; padding: 4px 8px; border-radius: 4px;">Data updated: Loading...</span>
+      </div>
       
-      <div class="search-container">
-        <input type="text" id="countySearch" placeholder="Search for a county (e.g., York, Los Angeles)..." autocomplete="off">
-        <ul id="countyResults" class="search-results"></ul>
-      </div>
-
-      <div class="interactive-grid" style="margin-bottom: 0;">
-        <!-- Left: Snapshot -->
-        <div class="panel" style="background: #f8f9fa;">
-          <h2>📊 County Snapshot</h2>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Median Home Price</span>
-            <span class="snapshot-value" id="dash-home-price">-</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Effective Property Tax Rate</span>
-            <span class="snapshot-value" id="dash-tax-rate">-</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Annual Insurance Premium</span>
-            <span class="snapshot-value" id="dash-insurance-annual">-</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">FEMA Climate Risk Score</span>
-            <span class="snapshot-value" id="dash-fema-risk">-</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Solar Payback (6kW)</span>
-            <span class="snapshot-value" id="dash-solar-payback">-</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">25-Yr Solar ROI</span>
-            <span class="snapshot-value" id="dash-solar-roi">-</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Market Score</span>
-            <span class="snapshot-value" id="dash-market-score">-</span>
-          </div>
-          <div class="snapshot-item" style="border-bottom: none; padding-bottom: 5px;">
-            <span class="snapshot-label">Livability Score</span>
-            <span class="snapshot-value" id="dash-livability">-</span>
-          </div>
-          <div style="font-size: 0.8em; color: #666; margin-bottom: 15px; margin-top: 0; line-height: 1.4;">
-            *Livability based on default weights. 
-            <a href="https://housing.dataindp.com/livability.html" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Calculate your own score →</a>
-          </div>
-          <span class="snapshot-source">Sources: U.S. Census ACS, FHFA, FEMA, NREL, FRED. Updated daily.</span>
+      <p>Select a county to see the complete financial picture. You can also add a second county to compare them side-by-side.</p>
+      
+      <div class="search-container-group">
+        <div class="search-container">
+          <input type="text" id="countySearch1" placeholder="Search primary county (e.g., York, Los Angeles)..." autocomplete="off">
+          <ul id="countyResults1" class="search-results"></ul>
         </div>
-
-        <!-- Right: PITI Breakdown -->
-        <div class="panel" style="background: #fff3e0; border-left: 4px solid var(--accent);">
-          <h2 style="border-bottom-color: #ffe0b2;">💰 Estimated Monthly Payment (PITI)</h2>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Principal & Interest</span>
-            <span class="snapshot-value" id="dash-pi">-</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Property Tax</span>
-            <span class="snapshot-value" id="dash-monthly-tax">-</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Home Insurance</span>
-            <span class="snapshot-value" id="dash-monthly-ins">-</span>
-          </div>
-          <div class="snapshot-item" style="border-top: 2px solid #ffe0b2; margin-top: 8px; padding-top: 12px;">
-            <span class="snapshot-label" style="font-weight: bold; font-size: 1.1em;">Total Monthly (PITI)</span>
-            <span class="snapshot-value" id="dash-piti-total" style="font-size: 1.3em; color: var(--accent);">-</span>
-          </div>
-          <p style="font-size: 0.8em; color: #888; margin-top: 10px; line-height: 1.5;">
-            *Based on 20% down payment, 30-year fixed mortgage at current FRED rate.<br>
-            Need a detailed amortization schedule? <a href="https://mortgage.dataindp.com" style="color: var(--accent); font-weight: bold; text-decoration: none;">Visit our Mortgage Tools →</a>
-          </p>
+        <div class="vs-badge">VS</div>
+        <div class="search-container">
+          <input type="text" id="countySearch2" placeholder="Compare with another county (Optional)..." autocomplete="off">
+          <ul id="countyResults2" class="search-results"></ul>
         </div>
       </div>
 
-      <!-- AdSense용 동적 텍스트 (JS 미작동 시 노출되는 기본 텍스트) -->
+      <!-- 비교 레이아웃 그리드 -->
+      <div class="dashboard-grid" id="dashboardGrid">
+        <!-- Primary County Panel -->
+        <div class="county-panel-wrapper">
+          <div class="panel" style="background: #f8f9fa; margin-bottom: 15px;">
+            <h3 id="name-1" style="color: var(--primary); margin-top: 0; text-align: center;">County Snapshot</h3>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Median Home Price</span>
+              <span class="snapshot-value" id="dash-home-price-1">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Effective Property Tax Rate</span>
+              <span class="snapshot-value" id="dash-tax-rate-1">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Annual Insurance Premium</span>
+              <span class="snapshot-value" id="dash-insurance-1">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">FEMA Climate Risk Score</span>
+              <span class="snapshot-value" id="dash-fema-1">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Solar Payback (6kW)</span>
+              <span class="snapshot-value" id="dash-solar-payback-1">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">25-Yr Solar ROI</span>
+              <span class="snapshot-value" id="dash-solar-roi-1">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Market Score</span>
+              <span class="snapshot-value" id="dash-market-score-1">-</span>
+            </div>
+            <div class="snapshot-item" style="border-bottom: none;">
+              <span class="snapshot-label">Livability Score</span>
+              <span class="snapshot-value" id="dash-livability-1">-</span>
+            </div>
+          </div>
+
+          <div class="panel" style="background: #fff3e0; border-left: 4px solid var(--accent);">
+            <h3 style="color: var(--accent); margin-top: 0; text-align: center;">💰 Estimated Monthly PITI</h3>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Principal & Interest</span>
+              <span class="snapshot-value" id="dash-pi-1">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Property Tax</span>
+              <span class="snapshot-value" id="dash-monthly-tax-1">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Home Insurance</span>
+              <span class="snapshot-value" id="dash-monthly-ins-1">-</span>
+            </div>
+            <div class="snapshot-item" style="border-top: 2px solid #ffe0b2; margin-top: 8px; padding-top: 12px;">
+              <span class="snapshot-label" style="font-weight: bold; font-size: 1.1em;">Total Monthly</span>
+              <span class="snapshot-value" id="dash-piti-total-1" style="font-size: 1.3em; color: var(--accent);">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary County Panel (Hidden by default) -->
+        <div class="county-panel-wrapper" id="panel-2" style="display: none;">
+          <div class="panel" style="background: #eef2f5; margin-bottom: 15px;">
+            <h3 id="name-2" style="color: var(--primary); margin-top: 0; text-align: center;">Comparison County</h3>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Median Home Price</span>
+              <span class="snapshot-value" id="dash-home-price-2">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Effective Property Tax Rate</span>
+              <span class="snapshot-value" id="dash-tax-rate-2">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Annual Insurance Premium</span>
+              <span class="snapshot-value" id="dash-insurance-2">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">FEMA Climate Risk Score</span>
+              <span class="snapshot-value" id="dash-fema-2">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Solar Payback (6kW)</span>
+              <span class="snapshot-value" id="dash-solar-payback-2">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">25-Yr Solar ROI</span>
+              <span class="snapshot-value" id="dash-solar-roi-2">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Market Score</span>
+              <span class="snapshot-value" id="dash-market-score-2">-</span>
+            </div>
+            <div class="snapshot-item" style="border-bottom: none;">
+              <span class="snapshot-label">Livability Score</span>
+              <span class="snapshot-value" id="dash-livability-2">-</span>
+            </div>
+          </div>
+
+          <div class="panel" style="background: #fdf2e9; border-left: 4px solid #d35400;">
+            <h3 style="color: #d35400; margin-top: 0; text-align: center;">💰 Estimated Monthly PITI</h3>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Principal & Interest</span>
+              <span class="snapshot-value" id="dash-pi-2">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Property Tax</span>
+              <span class="snapshot-value" id="dash-monthly-tax-2">-</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Home Insurance</span>
+              <span class="snapshot-value" id="dash-monthly-ins-2">-</span>
+            </div>
+            <div class="snapshot-item" style="border-top: 2px solid #f5cba7; margin-top: 8px; padding-top: 12px;">
+              <span class="snapshot-label" style="font-weight: bold; font-size: 1.1em;">Total Monthly</span>
+              <span class="snapshot-value" id="dash-piti-total-2" style="font-size: 1.3em; color: #d35400;">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AdSense용 동적 텍스트 -->
       <div id="dash-explanation" style="margin-top: 20px; padding: 15px; background: #fff; border-left: 4px solid var(--primary); font-size: 0.95em; line-height: 1.7;">
-        <strong>Interactive Analysis:</strong> Select a county above to generate a detailed cost analysis. For example, our data reveals how high property taxes in states like New Jersey can add hundreds of dollars to a monthly mortgage payment, while states like Hawaii offer strong solar ROI but carry unique climate risks.
+        <strong>Interactive Analysis:</strong> Select a county above to generate a detailed cost analysis.
       </div>
     </div>
 
-    <!-- 🆕 2. 5개 서브사이트 카드 (대시보드 아래로 이동) -->
+    <!-- 🆕 Did You Know & Chart Section -->
+    <div class="interactive-grid" style="margin-bottom: 30px;">
+      <div class="content-section" style="margin-bottom: 0;">
+        <h2>💡 Did You Know?</h2>
+        <div id="did-you-know-text" style="font-size: 1.05em; color: #444; min-height: 80px; line-height: 1.7;">
+          Loading interesting facts...
+        </div>
+      </div>
+      
+      <div class="content-section" style="margin-bottom: 0;">
+        <h2>📈 30-Yr Mortgage Rate Trend</h2>
+        <div style="height: 180px; width: 100%;">
+          <canvas id="mortgageChart"></canvas>
+        </div>
+        <p style="font-size: 0.75em; color: #888; margin-top: 10px; text-align: right;">Source: FRED</p>
+      </div>
+    </div>
+
+    <!-- Explore Ecosystem (카드 하단 이동) -->
     <div style="text-align: center; margin: 50px 0 20px;">
       <h2 style="color: var(--primary); font-size: 1.6em; margin-bottom: 10px;">Explore Our Data Ecosystem</h2>
       <p style="color: #666; font-size: 1.05em;">Dive deeper into specific aspects of homeownership with our dedicated platforms.</p>
@@ -144,17 +216,17 @@
     <div class="links">
       <a href="https://housing.dataindp.com" class="card">
         <h3>🏘️ Housing &amp; Livability</h3>
-        <p>Explore <strong>Livability Scores</strong> on 6 adjustable axes (affordability, stability, momentum, safety, health, amenities), plus market scores, price trends, and county-level statistics across 3,100+ U.S. counties.</p>
+        <p>Explore <strong>Livability Scores</strong> on 6 adjustable axes, plus market scores, price trends, and county-level statistics across 3,100+ U.S. counties.</p>
         <span class="btn">Explore Housing &amp; Livability →</span>
       </a>
       <a href="https://mortgage.dataindp.com" class="card">
         <h3>💰 Mortgage Tools</h3>
-        <p>Calculate monthly payments with a full PITI breakdown, view amortization schedules, and check FHA/VA loan limits. Plan your financing with our free, transparent calculators.</p>
+        <p>Calculate monthly payments with a full PITI breakdown, view amortization schedules, and check FHA/VA loan limits. Plan your financing transparently.</p>
         <span class="btn">Use Mortgage Tools →</span>
       </a>
       <a href="https://propertytax.dataindp.com" class="card">
         <h3>🧾 Property Tax</h3>
-        <p>Find effective property tax rates and detailed tax information for every U.S. county. Understand the true, long-term cost of your next home before you commit.</p>
+        <p>Find effective property tax rates and detailed tax information for every U.S. county. Understand the true, long-term cost of your next home.</p>
         <span class="btn">Check Property Taxes →</span>
       </a>
       <a href="https://insurance.dataindp.com" class="card">
@@ -164,15 +236,15 @@
       </a>
       <a href="https://solar.dataindp.com" class="card">
         <h3>☀️ Solar ROI &amp; Energy Savings</h3>
-        <p>Calculate county-level solar payback periods, 25-year ROI, and compare local electricity rates (EIA data). Discover how much you can save on homeownership costs with solar.</p>
+        <p>Calculate county-level solar payback periods, 25-year ROI, and compare local electricity rates (EIA data). Discover how much you can save.</p>
         <span class="btn">Calculate Solar ROI →</span>
       </a>
     </div>
 
-    <!-- Top Livability Counties (축소된 카드 버전) -->
+    <!-- Top Livability Counties (카드) -->
     <div class="content-section">
       <h2>🏆 Top Livability Counties (<span class="currentYear">2026</span>)</h2>
-      <p>The <strong>Livability Score</strong> compares U.S. counties from a residence and lifestyle perspective, combining 6 public datasets: Affordability, Stability, Momentum, Safety, Health, and Amenities. Below are the current top 3 counties based on default weights.</p>
+      <p>The <strong>Livability Score</strong> compares U.S. counties from a residence and lifestyle perspective, combining 6 public datasets: Affordability, Stability, Momentum, Safety, Health, and Amenities.</p>
       
       <div id="livabilityCards" class="livability-cards-grid" style="display:none;"></div>
       <p class="loading-text" id="livabilityLoader">Loading top counties…</p>
@@ -185,7 +257,7 @@
     <!-- Featured Guides -->
     <div class="content-section">
       <h2>📚 Featured Data Guides</h2>
-      <p>These in-depth, original guides explain how to read the data on this site, where it comes from, and how to use it for real housing decisions. Each guide is written for readers who want to go beyond the headline numbers.</p>
+      <p>These in-depth, original guides explain how to read the data on this site, where it comes from, and how to use it for real housing decisions.</p>
       <div class="guide-grid">
         <a class="guide-card" href="/guides/livability-score-guide.html">
           <h4>The Livability Score Explained</h4>
@@ -214,88 +286,53 @@
     <!-- Market Insights -->
     <div class="content-section">
       <h2>Current U.S. Real Estate Market Insights</h2>
-      <p>Navigating the U.S. real estate market requires understanding the delicate balance between home prices, mortgage rates, and local tax burdens. In today's environment, buyers and investors must look beyond the listing price to grasp the full financial picture — and increasingly, quality-of-life factors and energy costs play a role in where people choose to live.</p>
+      <p>Navigating the U.S. real estate market requires understanding the delicate balance between home prices, mortgage rates, and local tax burdens. In today's environment, buyers and investors must look beyond the listing price to grasp the full financial picture.</p>
 
       <h3>1. The Impact of Mortgage Rates on Affordability</h3>
-      <p>Over the past few years, the 30-year fixed mortgage rate has experienced significant volatility. When rates rise, even a one percentage point increase can add hundreds of dollars to a monthly payment. It is also worth separating <em>nominal</em> affordability from <em>effective</em> affordability. A county with lower home prices but higher property taxes and insurance premiums can end up costing more per month than a higher-priced county with low carrying costs. Our PITI-based tools make these trade-offs visible.</p>
+      <p>Over the past few years, the 30-year fixed mortgage rate has experienced significant volatility. When rates rise, even a one percentage point increase can add hundreds of dollars to a monthly payment. Our PITI-based tools make these trade-offs visible.</p>
 
       <h3>2. Housing Market Momentum and Stability</h3>
-      <p>The housing market is not a monolith; it is a collection of thousands of local micro-economies. Our <strong>Housing &amp; Livability</strong> platform analyzes county-level data to determine market phases alongside a separate <strong>Livability Score</strong> across six axes. Where the Market Score focuses on investment dynamics, Livability focuses on residence and lifestyle. Adjusting the weights lets you see which counties best fit your own priorities.</p>
+      <p>The housing market is not a monolith; it is a collection of thousands of local micro-economies. Adjusting the weights lets you see which counties best fit your own priorities.</p>
 
       <h3>3. The Hidden Cost: Property Taxes and Insurance</h3>
-      <p>A common oversight for homebuyers is underestimating property taxes and insurance. Effective property tax rates can vary drastically from one state to another. In some regions, high property taxes can significantly erode the return on investment for rental properties. Furthermore, climate risk is increasingly a pricing factor. FEMA's National Risk Index and county-level premium data reveal that two otherwise similar homes can carry very different insurance burdens.</p>
+      <p>A common oversight for homebuyers is underestimating property taxes and insurance. FEMA's National Risk Index and county-level premium data reveal that two otherwise similar homes can carry very different insurance burdens.</p>
 
       <h3>4. Solar ROI as a Homeownership Cost Offset</h3>
-      <p>As electricity rates rise, homeowners are increasingly looking at solar energy not just as an environmental choice, but as a financial hedge. Our <strong>Solar ROI</strong> platform combines EIA electricity rate data with NREL solar radiation data to calculate county-level payback periods. In states with high utility rates, a solar installation can pay for itself in under a decade, effectively offsetting a significant portion of the long-term costs of homeownership.</p>
+      <p>As electricity rates rise, homeowners are increasingly looking at solar energy not just as an environmental choice, but as a financial hedge. In states with high utility rates, a solar installation can pay for itself in under a decade.</p>
       
       <h3>5. How to Use This Site Responsibly</h3>
-      <p>All data on this site is derived from public sources and is intended for education and research. It is not financial, legal, or real estate advice. County averages can mask block-level variation, and percentile scores describe relative position rather than absolute quality. We document these limitations on our <a href="/methodology.html">methodology page</a> so that readers can judge the data for themselves.</p>
+      <p>All data on this site is derived from public sources and is intended for education and research. It is not financial, legal, or real estate advice. We document these limitations on our <a href="/methodology.html">methodology page</a>.</p>
     </div>
 
     <!-- FAQ -->
     <div class="content-section">
       <h2>Frequently Asked Questions (FAQ)</h2>
-
       <div class="faq-item">
-        <h4>What is the Livability Score, and how is it different from the Market Score?</h4>
-        <p>Livability Score is a six-axis composite built for residence and lifestyle decisions. Market Score is a separate four-axis composite built for investment evaluation. Both use percentile ranking across all U.S. counties. You can adjust Livability weights to match your own priorities on the <a href="https://housing.dataindp.com/livability.html">Livability page</a>.</p>
+        <h4>What is the Livability Score?</h4>
+        <p>Livability Score is a six-axis composite built for residence and lifestyle decisions. Market Score is a separate four-axis composite built for investment evaluation. Adjust weights on the <a href="https://housing.dataindp.com/livability.html">Livability page</a>.</p>
       </div>
-
       <div class="faq-item">
-        <h4>Where does the safety, health, and amenity data come from?</h4>
-        <p>Safety uses FBI Uniform Crime Reporting data. Health uses CDC PLACES estimates across five indicators. Amenities uses OpenStreetMap point-of-interest density. All three are public datasets — full attribution appears in our <a href="/about.html">About section</a>.</p>
+        <h4>Why do property taxes vary so much?</h4>
+        <p>Property taxes are determined by local government budget needs and assessment practices. Our <a href="/guides/property-tax-guide.html">property tax guide</a> explains how to interpret these differences.</p>
       </div>
-
-      <div class="faq-item">
-        <h4>Why do property taxes and insurance premiums vary so much between counties?</h4>
-        <p>Property taxes are determined by local government budget needs and assessment practices. Insurance premiums reflect local hazard exposure (e.g., flood, wildfire) and the cost of rebuilding. Our <a href="/guides/property-tax-guide.html">property tax guide</a> and <a href="/guides/climate-risk-insurance-guide.html">climate risk guide</a> explain how to interpret these differences.</p>
-      </div>
-
       <div class="faq-item">
         <h4>How is the solar payback period calculated?</h4>
-        <p>We calculate net cost after the 30% federal Investment Tax Credit (ITC), then accumulate annual savings year-by-year (accounting for a 2.5% rate escalation and 0.5% panel degradation). The data relies on NREL solar radiation estimates and EIA electricity rates. Read our <a href="/guides/solar-roi-guide.html">solar ROI guide</a> for details.</p>
-      </div>
-
-      <div class="faq-item">
-        <h4>Can I use your calculators for investment properties?</h4>
-        <p>Yes, but note that investment property mortgage rates are typically 0.5% to 1.0% higher than primary residence rates, and property taxes may be reassessed upon purchase depending on state law.</p>
-      </div>
-
-      <div class="faq-item">
-        <h4>Why do I see a fixed value before live data loads?</h4>
-        <p>To keep the page readable for every visitor — including those on slow connections or with JavaScript disabled — we display recent reference values directly in the HTML. When live data feeds are reachable, the JavaScript layer replaces those values with the latest figures.</p>
+        <p>We calculate net cost after the 30% federal ITC, then accumulate annual savings year-by-year. Read our <a href="/guides/solar-roi-guide.html">solar ROI guide</a> for details.</p>
       </div>
     </div>
 
     <!-- Data Sources -->
     <div class="content-section">
       <h2>About Data in DP &amp; Our Data Sources</h2>
-      <p>Data in DP was created to democratize access to complex real estate data. We believe that informed decisions are the best decisions — whether you are buying your first home, refinancing a mortgage, or evaluating energy savings across counties.</p>
-      <p>All data and analytics across our platforms are sourced from reliable public datasets and official government agencies. Our primary sources include:</p>
-      <ul>
-        <li><strong>U.S. Census Bureau (ACS):</strong> demographics, housing values, rent, and income.</li>
-        <li><strong>FHFA:</strong> House Price Index (HPI) and market momentum data.</li>
-        <li><strong>FRED:</strong> real-time mortgage rate tracking.</li>
-        <li><strong>HUD:</strong> official FHA loan limits.</li>
-        <li><strong>FBI Uniform Crime Reporting:</strong> county-level crime rates.</li>
-        <li><strong>FEMA National Risk Index:</strong> climate and natural hazard risk scores.</li>
-        <li><strong>CDC PLACES:</strong> county-level health indicators.</li>
-        <li><strong>U.S. Energy Information Administration (EIA):</strong> state and county electricity rates.</li>
-        <li><strong>NREL (National Renewable Energy Laboratory):</strong> solar radiation data (NSRDB).</li>
-        <li><strong>OpenStreetMap:</strong> amenity density data.</li>
-      </ul>
-      <p>We continuously update our pipelines to ensure users are interacting with the most current and reliable data available. For a detailed description of every formula and weight, please see our <a href="/methodology.html">Methodology page</a>.</p>
+      <p>All data and analytics across our platforms are sourced from reliable public datasets and official government agencies, including the U.S. Census Bureau (ACS), FHFA, FRED, FBI, FEMA, CDC, EIA, NREL, and OpenStreetMap.</p>
+      <p>We continuously update our pipelines to ensure users are interacting with the most current and reliable data available. For a detailed description of every formula, please see our <a href="/methodology.html">Methodology page</a>.</p>
     </div>
 
     <footer>
       <p>&copy; <span class="currentYear">2026</span> Data in DP. All rights reserved.</p>
       <p>
-        <a href="/about.html">About</a> |
-        <a href="/methodology.html">Methodology</a> |
-        <a href="/guides/">Guides</a> |
-        <a href="/privacy.html">Privacy Policy</a> |
-        <a href="/terms.html">Terms of Service</a> |
-        <a href="/contact.html">Contact Us</a>
+        <a href="/about.html">About</a> | <a href="/methodology.html">Methodology</a> | <a href="/guides/">Guides</a> | 
+        <a href="/privacy.html">Privacy Policy</a> | <a href="/terms.html">Terms of Service</a> | <a href="/contact.html">Contact Us</a>
       </p>
       <p style="font-size:0.8em; color:#aaa; margin-top:15px;">
         Amenity data: © OpenStreetMap contributors (ODbL 1.0).<br>

@@ -1,24 +1,11 @@
 const CURRENT_YEAR = new Date().getFullYear();
 document.querySelectorAll('.currentYear').forEach(el => el.textContent = CURRENT_YEAR);
 
-// 🌟 대시보드 전역 변수
 let dashboardData = {};
-let globalMortgageRate = 7.0; 
+let globalMortgageRate = 7.0;
 
-const STATE_ABBR = {
-  'alabama':'AL','alaska':'AK','arizona':'AZ','arkansas':'AR','california':'CA',
-  'colorado':'CO','connecticut':'CT','delaware':'DE','district-of-columbia':'DC',
-  'florida':'FL','georgia':'GA','hawaii':'HI','idaho':'ID','illinois':'IL',
-  'indiana':'IN','iowa':'IA','kansas':'KS','kentucky':'KY','louisiana':'LA',
-  'maine':'ME','maryland':'MD','massachusetts':'MA','michigan':'MI','minnesota':'MN',
-  'mississippi':'MS','missouri':'MO','montana':'MT','nebraska':'NE','nevada':'NV',
-  'new-hampshire':'NH','new-jersey':'NJ','new-mexico':'NM','new-york':'NY',
-  'north-carolina':'NC','north-dakota':'ND','ohio':'OH','oklahoma':'OK','oregon':'OR',
-  'pennsylvania':'PA','rhode-island':'RI','south-carolina':'SC','south-dakota':'SD',
-  'tennessee':'TN','texas':'TX','utah':'UT','vermont':'VT','virginia':'VA',
-  'washington':'WA','west-virginia':'WV','wisconsin':'WI','wyoming':'WY',
-  'puerto-rico':'PR'
-};
+// 🌟 유틸리티: 이름 축약
+const STATE_ABBR = { 'alabama':'AL','alaska':'AK','arizona':'AZ','arkansas':'AR','california':'CA','colorado':'CO','connecticut':'CT','delaware':'DE','district-of-columbia':'DC','florida':'FL','georgia':'GA','hawaii':'HI','idaho':'ID','illinois':'IL','indiana':'IN','iowa':'IA','kansas':'KS','kentucky':'KY','louisiana':'LA','maine':'ME','maryland':'MD','massachusetts':'MA','michigan':'MI','minnesota':'MN','mississippi':'MS','missouri':'MO','montana':'MT','nebraska':'NE','nevada':'NV','new-hampshire':'NH','new-jersey':'NJ','new-mexico':'NM','new-york':'NY','north-carolina':'NC','north-dakota':'ND','ohio':'OH','oklahoma':'OK','oregon':'OR','pennsylvania':'PA','rhode-island':'RI','south-carolina':'SC','south-dakota':'SD','tennessee':'TN','texas':'TX','utah':'UT','vermont':'VT','virginia':'VA','washington':'WA','west-virginia':'WV','wisconsin':'WI','wyoming':'WY','puerto-rico':'PR' };
 const STATE_KEYS_SORTED = Object.keys(STATE_ABBR).sort((a, b) => b.length - a.length);
 
 function nameFromSlug(slug) {
@@ -32,10 +19,9 @@ function nameFromSlug(slug) {
   }
   return slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
-
 function fmt1(v) { return (v == null || isNaN(v)) ? '–' : (Math.round(v * 10) / 10).toFixed(1); }
 
-// 🌟 1. Top Livability 카드 렌더링
+// 🌟 1. Top Livability 렌더링
 function renderTopLivability(top) {
   const container = document.getElementById('livabilityCards');
   container.innerHTML = top.map((row, i) => {
@@ -53,55 +39,60 @@ function renderTopLivability(top) {
 }
 
 async function fetchTopLivability() {
-  const cacheKey = 'livability_top_v1';
-  const cachedAt = 'livability_top_v1_at';
-  const now = Date.now();
   try {
-    const cached = sessionStorage.getItem(cacheKey);
-    const ts = parseInt(sessionStorage.getItem(cachedAt) || '0');
-    if (cached && (now - ts) < 5 * 60 * 1000) {
-      renderTopLivability(JSON.parse(cached));
-      return;
-    }
-  } catch (e) { /* ignore */ }
-
-  try {
-    const smallRes = await fetch('https://housing.dataindp.com/data/top_livability.json');
-    if (smallRes.ok) {
-      const small = await smallRes.json();
+    const res = await fetch('https://housing.dataindp.com/data/top_livability.json');
+    if (res.ok) {
+      const small = await res.json();
       if (small.top && small.top.length) {
-        const top = small.top.slice(0, 3).map(r => ({ slug: r.slug, name: r.name || nameFromSlug(r.slug), composite: r.composite, tier: r.tier }));
-        renderTopLivability(top);
-        sessionStorage.setItem(cacheKey, JSON.stringify(top));
-        sessionStorage.setItem(cachedAt, String(now));
+        renderTopLivability(small.top.slice(0, 3).map(r => ({ slug: r.slug, name: r.name || nameFromSlug(r.slug), composite: r.composite, tier: r.tier })));
         return;
       }
     }
-    
-    // Fallback: 메인 JSON에서 추출 (임시)
-    const res = await fetch('https://housing.dataindp.com/static/counties_livability.json');
-    const data = await res.json();
-    const list = [];
-    for (const [fips, c] of Object.entries(data.counties || {})) {
-      if(c.axes) {
-        let num = 0, den = 0;
-        const weights = { affordability: 25, stability: 15, momentum: 15, safety: 15, health: 10, amenities: 20 };
-        for (const [k, w] of Object.entries(weights)) {
-          if (c.axes[k] != null) { num += c.axes[k] * w; den += w; }
-        }
-        if (den > 0) list.push({ slug: c.slug, name: nameFromSlug(c.slug), composite: num / den, tier: 'Top Tier' });
-      }
-    }
-    list.sort((a, b) => b.composite - a.composite);
-    const top = list.slice(0, 3);
-    renderTopLivability(top);
-  } catch (e) {
-    console.error('Top livability error:', e);
-    document.getElementById('livabilityLoader').innerHTML = 'Live rankings are temporarily unavailable.';
-  }
+  } catch (e) { console.error(e); }
 }
 
-// 🌟 2. 대시보드 데이터 Fetch 및 병합
+// 🌟 2. 모기지 금리 차트 렌더링
+async function renderMortgageChart() {
+  try {
+    const res = await fetch('https://housing.dataindp.com/data/fred_mortgage_rates.json');
+    if (!res.ok) throw new Error('Chart data not found');
+    const data = await res.json();
+    const observations = data.series?.MORTGAGE30US?.observations || [];
+    
+    // 최근 60개월 데이터만 추출
+    const recentData = observations.slice(-60);
+    const labels = recentData.map(d => d.date);
+    const values = recentData.map(d => d.value);
+
+    const ctx = document.getElementById('mortgageChart');
+    if(!ctx) return;
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '30-Year Fixed Rate (%)',
+          data: values,
+          borderColor: '#1a3d5c',
+          backgroundColor: 'rgba(26, 61, 92, 0.1)',
+          borderWidth: 2,
+          fill: true,
+          pointRadius: 0,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { display: false }, y: { display: true, ticks: { callback: function(value) { return value + '%'; } } } }
+      }
+    });
+  } catch (e) { console.error('Chart error', e); }
+}
+
+// 🌟 3. 대시보드 데이터 Fetch 및 병합
 async function fetchDashboardData() {
   try {
     const [housingRes, insRes, solarRes] = await Promise.all([
@@ -119,78 +110,44 @@ async function fetchDashboardData() {
     dashboardData = housingJson.counties || {};
     globalMortgageRate = housingJson.metadata.mortgage_rate_30yr || globalMortgageRate;
 
+    // 🆕 최신 업데이트 날짜 표시
+    if (housingJson.metadata.generated_at) {
+      const dateObj = new Date(housingJson.metadata.generated_at);
+      document.getElementById('last-updated').textContent = `Data updated: ${dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+    }
+
+    // 보험 및 태양광 병합
     const insByFips = {};
     if (insJson.counties) Object.values(insJson.counties).forEach(item => insByFips[item.fips] = item);
-
     const solarByFips = {};
     if (solarJson.counties) Object.values(solarJson.counties).forEach(item => solarByFips[item.fips] = item);
 
     Object.keys(dashboardData).forEach(slug => {
       const fips = dashboardData[slug].fips;
-      
       if (insByFips[fips]) {
         dashboardData[slug].insurance_annual = insByFips[fips].premium;
         dashboardData[slug].fema_risk = insByFips[fips].fema_risk;
-      } else {
-        dashboardData[slug].insurance_annual = null;
-        dashboardData[slug].fema_risk = null;
       }
-
       if (solarByFips[fips]) {
         dashboardData[slug].solar_payback = solarByFips[fips].payback_years;
         dashboardData[slug].solar_roi = solarByFips[fips].roi_25y_pct;
         dashboardData[slug].solar_savings = solarByFips[fips].annual_savings;
-      } else {
-        dashboardData[slug].solar_payback = null;
-        dashboardData[slug].solar_roi = null;
-        dashboardData[slug].solar_savings = null;
       }
     });
 
-    const searchInput = document.getElementById('countySearch');
-    const resultsList = document.getElementById('countyResults');
-    
-    const sortedSlugs = Object.keys(dashboardData).sort((a, b) => 
-      dashboardData[a].name.localeCompare(dashboardData[b].name)
-    );
+    // 🆕 Did You Know 사실 추출
+    generateDidYouKnow();
 
+    // 검색 로직 세팅
+    setupSearch('countySearch1', 'countyResults1', (slug) => updateDashboard(slug, 1));
+    setupSearch('countySearch2', 'countyResults2', (slug) => updateDashboard(slug, 2));
+
+    // 초기값 세팅
+    const sortedSlugs = Object.keys(dashboardData).sort((a, b) => dashboardData[a].name.localeCompare(dashboardData[b].name));
     if (sortedSlugs.length > 0) {
-      searchInput.value = dashboardData[sortedSlugs[0]].name;
-      updateDashboard(sortedSlugs[0]);
+      document.getElementById('countySearch1').value = dashboardData[sortedSlugs[0]].name;
+      updateDashboard(sortedSlugs[0], 1);
     }
-
-    function renderOptions(query = '') {
-      const lowerQuery = query.toLowerCase();
-      const filtered = sortedSlugs.filter(slug => 
-        dashboardData[slug].name.toLowerCase().includes(lowerQuery)
-      ).slice(0, 100); 
-
-      if (filtered.length === 0) {
-        resultsList.innerHTML = '<li style="color:#999;cursor:default;">No counties found</li>';
-      } else {
-        resultsList.innerHTML = filtered.map(slug => 
-          `<li data-slug="${slug}">${dashboardData[slug].name}</li>`
-        ).join('');
-      }
-      resultsList.style.display = 'block';
-    }
-
-    searchInput.addEventListener('focus', () => renderOptions(searchInput.value));
-    searchInput.addEventListener('input', (e) => renderOptions(e.target.value));
-    
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.search-container')) resultsList.style.display = 'none';
-    });
-
-    resultsList.addEventListener('click', (e) => {
-      const li = e.target.closest('li');
-      if (li && li.dataset.slug) {
-        const slug = li.dataset.slug;
-        searchInput.value = dashboardData[slug].name;
-        resultsList.style.display = 'none';
-        updateDashboard(slug);
-      }
-    });
 
   } catch (err) {
     console.error('Dashboard data load failed:', err);
@@ -198,90 +155,119 @@ async function fetchDashboardData() {
   }
 }
 
-// 🌟 3. 대시보드 UI 업데이트
-function updateDashboard(slug) {
+// 🌟 4. 검색 기능 셋업
+function setupSearch(inputId, listId, onSelect) {
+  const input = document.getElementById(inputId);
+  const list = document.getElementById(listId);
+  const sortedSlugs = Object.keys(dashboardData).sort((a, b) => dashboardData[a].name.localeCompare(dashboardData[b].name));
+
+  function renderOptions(query = '') {
+    const filtered = sortedSlugs.filter(slug => dashboardData[slug].name.toLowerCase().includes(query.toLowerCase())).slice(0, 100); 
+    list.innerHTML = filtered.length === 0 ? '<li style="color:#999;cursor:default;">No counties found</li>' : 
+      filtered.map(slug => `<li data-slug="${slug}">${dashboardData[slug].name}</li>`).join('');
+    list.style.display = 'block';
+  }
+
+  input.addEventListener('focus', () => renderOptions(input.value));
+  input.addEventListener('input', (e) => renderOptions(e.target.value));
+  document.addEventListener('click', (e) => { if (!e.target.closest('.search-container')) list.style.display = 'none'; });
+  list.addEventListener('click', (e) => {
+    const li = e.target.closest('li');
+    if (li && li.dataset.slug) {
+      input.value = dashboardData[li.dataset.slug].name;
+      list.style.display = 'none';
+      onSelect(li.dataset.slug);
+    }
+  });
+}
+
+// 🌟 5. 대시보드 UI 업데이트 (비교 로직 포함)
+function updateDashboard(slug, panelNum = 1) {
   const data = dashboardData[slug];
   if (!data) return;
 
-  document.getElementById('dash-home-price').textContent = '$' + data.home_price.toLocaleString();
-  document.getElementById('dash-tax-rate').textContent = data.tax_rate ? data.tax_rate.toFixed(2) + '%' : 'N/A';
-  document.getElementById('dash-market-score').textContent = data.market_score ? data.market_score.toFixed(1) + ' / 100' : 'N/A';
-  
-  const livabilityEl = document.getElementById('dash-livability');
-  if (data.livability) {
-    livabilityEl.textContent = data.livability.toFixed(1) + ' / 100';
-  } else {
-    livabilityEl.innerHTML = '<span style="font-size: 0.85em; color: #888; font-weight: normal;">Default weights</span>';
+  // UI 패널 보이기 처리
+  if (panelNum === 2) {
+    document.getElementById('panel-2').style.display = 'flex';
+    document.getElementById('dashboardGrid').style.gridTemplateColumns = '1fr 1fr';
   }
 
-  const annualIns = data.insurance_annual || 0;
-  document.getElementById('dash-insurance-annual').textContent = annualIns > 0 ? '$' + annualIns.toLocaleString() : 'N/A';
-  document.getElementById('dash-fema-risk').textContent = data.fema_risk ? data.fema_risk.toFixed(1) + ' / 100' : 'N/A';
+  const suffix = `-${panelNum}`;
+  
+  document.getElementById(`name${suffix}`).textContent = data.name;
+  document.getElementById(`dash-home-price${suffix}`).textContent = '$' + data.home_price.toLocaleString();
+  document.getElementById(`dash-tax-rate${suffix}`).textContent = data.tax_rate ? data.tax_rate.toFixed(2) + '%' : 'N/A';
+  document.getElementById(`dash-insurance${suffix}`).textContent = data.insurance_annual ? '$' + data.insurance_annual.toLocaleString() : 'N/A';
+  document.getElementById(`dash-fema${suffix}`).textContent = data.fema_risk ? data.fema_risk.toFixed(1) + ' / 100' : 'N/A';
+  document.getElementById(`dash-solar-payback${suffix}`).textContent = data.solar_payback ? data.solar_payback.toFixed(1) + ' Years' : 'N/A';
+  document.getElementById(`dash-solar-roi${suffix}`).textContent = data.solar_roi ? data.solar_roi.toFixed(0) + '%' : 'N/A';
+  document.getElementById(`dash-market-score${suffix}`).textContent = data.market_score ? data.market_score.toFixed(1) + ' / 100' : 'N/A';
+  document.getElementById(`dash-livability${suffix}`).textContent = data.livability ? data.livability.toFixed(1) + ' / 100' : 'N/A';
 
-  document.getElementById('dash-solar-payback').textContent = data.solar_payback ? data.solar_payback.toFixed(1) + ' Years' : 'N/A';
-  document.getElementById('dash-solar-roi').textContent = data.solar_roi ? data.solar_roi.toFixed(0) + '%' : 'N/A';
-
+  // PITI 계산
   const price = data.home_price;
-  const downPct = 20; 
-  const rate = globalMortgageRate;
-  const taxRate = data.tax_rate || 0;
-
-  const loanAmount = price * (1 - (downPct / 100));
-  const monthlyRate = (rate / 100) / 12;
+  const loanAmount = price * 0.8;
+  const monthlyRate = (globalMortgageRate / 100) / 12;
   const numPayments = 30 * 12;
 
   let pi = 0;
-  if (loanAmount > 0 && rate > 0) {
+  if (loanAmount > 0 && monthlyRate > 0) {
     pi = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
   }
 
-  const monthlyTax = (price * (taxRate / 100)) / 12;
-  const monthlyIns = annualIns / 12; 
-
+  const monthlyTax = (price * ((data.tax_rate || 0) / 100)) / 12;
+  const monthlyIns = (data.insurance_annual || 0) / 12;
+  
   const roundedPi = Math.round(pi);
   const roundedTax = Math.round(monthlyTax);
   const roundedIns = Math.round(monthlyIns);
   const totalPITI = roundedPi + roundedTax + roundedIns; 
 
-  document.getElementById('dash-pi').textContent = '$' + roundedPi.toLocaleString();
-  document.getElementById('dash-monthly-tax').textContent = '$' + roundedTax.toLocaleString();
-  document.getElementById('dash-monthly-ins').textContent = annualIns > 0 ? '$' + roundedIns.toLocaleString() : 'N/A';
-  document.getElementById('dash-piti-total').textContent = '$' + totalPITI.toLocaleString();
+  document.getElementById(`dash-pi${suffix}`).textContent = '$' + roundedPi.toLocaleString();
+  document.getElementById(`dash-monthly-tax${suffix}`).textContent = '$' + roundedTax.toLocaleString();
+  document.getElementById(`dash-monthly-ins${suffix}`).textContent = data.insurance_annual ? '$' + roundedIns.toLocaleString() : 'N/A';
+  document.getElementById(`dash-piti-total${suffix}`).textContent = '$' + totalPITI.toLocaleString();
 
-  let analysis = `<strong>Analysis for ${data.name}:</strong> `;
-  analysis += `The median home price is $${price.toLocaleString()}. `;
-
-  if (taxRate > 1.5) {
-    analysis += `Property taxes are relatively high here (${taxRate.toFixed(2)}%), adding about $${roundedTax.toLocaleString()} to your monthly payment. `;
-  } else {
-    analysis += `The effective property tax rate is a manageable ${taxRate.toFixed(2)}%, costing roughly $${roundedTax.toLocaleString()} per month. `;
+  // 분석 텍스트 (Primary 카운티만 상세 분석 생성)
+  if (panelNum === 1) {
+    let analysis = `<strong>Analysis for ${data.name}:</strong> The median home price is $${price.toLocaleString()}. `;
+    analysis += `With a property tax rate of ${data.tax_rate ? data.tax_rate.toFixed(2) + '%' : 'N/A'}, taxes add about $${roundedTax.toLocaleString()} per month. `;
+    if (data.insurance_annual) analysis += `Homeowners insurance is estimated at $${data.insurance_annual.toLocaleString()} annually (about $${roundedIns.toLocaleString()}/month) based on FEMA climate risk data. `;
+    if (data.solar_payback) analysis += `A 6kW solar installation would pay for itself in roughly ${data.solar_payback.toFixed(1)} years, yielding a 25-year ROI of ${data.solar_roi.toFixed(0)}%. `;
+    if (data.market_score) analysis += `The local market score is ${data.market_score.toFixed(1)}/100. `;
+    
+    document.getElementById('dash-explanation').innerHTML = analysis;
   }
+}
 
-  if (annualIns > 0) {
-    analysis += `Homeowners insurance is estimated at $${annualIns.toLocaleString()} annually (about $${roundedIns.toLocaleString()}/month) based on FEMA climate risk data. `;
-  }
+// 🌟 6. Did You Know 데이터 하이라이트 생성
+function generateDidYouKnow() {
+  let highestTax = { name: '', val: 0 };
+  let bestSolar = { name: '', val: 999 };
+  let worstSolar = { name: '', val: 0 };
 
-  if (data.solar_payback) {
-    analysis += `A 6kW solar installation would pay for itself in approximately ${data.solar_payback.toFixed(1)} years, yielding a 25-year ROI of ${data.solar_roi.toFixed(0)}% and saving about $${data.solar_savings.toLocaleString()} annually on energy bills. `;
-  }
+  Object.values(dashboardData).forEach(c => {
+    if (c.tax_rate && c.tax_rate > highestTax.val) highestTax = { name: c.name, val: c.tax_rate };
+    if (c.solar_payback && c.solar_payback < bestSolar.val) bestSolar = { name: c.name, val: c.solar_payback };
+    if (c.solar_payback && c.solar_payback > worstSolar.val) worstSolar = { name: c.name, val: c.solar_payback };
+  });
 
-  if (data.market_score > 60) {
-    analysis += `The local housing market is currently rated highly (Market Score: ${data.market_score.toFixed(1)}/100), indicating strong fundamentals. `;
-  } else if (data.market_score > 0) {
-    analysis += `The market shows a moderate score of ${data.market_score.toFixed(1)}/100, reflecting mixed conditions. `;
-  }
+  const facts = [
+    `Did you know? <strong>${highestTax.name}</strong> has one of the highest effective property tax rates in the country at <strong>${highestTax.val.toFixed(2)}%</strong>.`,
+    `Did you know? Homeowners in <strong>${bestSolar.name}</strong> can expect a solar payback period of just <strong>${bestSolar.val.toFixed(1)} years</strong>.`,
+    `Did you know? In <strong>${worstSolar.name}</strong>, the solar payback period can stretch up to <strong>${worstSolar.val.toFixed(1)} years</strong> due to lower electricity rates or less sunlight.`
+  ];
 
-  if (data.livability) {
-    analysis += `With a Livability Score of ${data.livability.toFixed(1)}, this county offers a solid quality of life relative to national averages. `;
-  }
-
-  document.getElementById('dash-explanation').innerHTML = analysis;
+  // 랜덤하게 하나 선택하여 표시
+  const randomFact = facts[Math.floor(Math.random() * facts.length)];
+  document.getElementById('did-you-know-text').innerHTML = randomFact;
 }
 
 // 🌟 초기화
 document.addEventListener('DOMContentLoaded', () => {
   fetchTopLivability();
   fetchDashboardData();
+  renderMortgageChart();
   
   document.querySelectorAll('.faq-item h4').forEach(item => {
     item.addEventListener('click', () => item.parentElement.classList.toggle('active'));
